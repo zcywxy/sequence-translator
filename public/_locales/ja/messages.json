@@ -1,0 +1,23 @@
+{
+  "app_name": {
+    "message": "Sequence Translator"
+  },
+  "app_description": {
+    "message": "Webサイト、テキスト選択、動画字幕などの翻訳に対応した、シンプルで直感的な二言語対応翻訳拡張機能。複数の翻訳サービスやAI翻訳APIをサポートし、豊富で柔軟なカスタマイズオプションを備えています。"
+  },
+  "toggle_translate": {
+    "message": "翻訳の切り替え"
+  },
+  "toggle_style": {
+    "message": "スタイル切り替え"
+  },
+  "open_options": {
+    "message": "設定を開く"
+  },
+  "open_tranbox": {
+    "message": "ポップアップを開く"
+  },
+  "open_separate_window": {
+    "message": "独立ウィンドウで開く"
+  }
+}
