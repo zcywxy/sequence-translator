@@ -730,12 +730,6 @@ export default function Apis() {
           {i18n("about_api_2")}
           <br />
           {i18n("about_api_3")}
-          <Link
-            href="https://github.com/fishjar/kiss-translator/blob/master/custom-api_v2.md"
-            target="_blank"
-          >
-            {i18n("goto_custom_api_example")}
-          </Link>
         </Alert>
 
         <Box>
