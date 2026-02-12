@@ -8,6 +8,7 @@ import { apiTranslate } from "../../apis";
 import CopyBtn from "./CopyBtn";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import { useTheme, alpha } from "@mui/material/styles";
 
 export default function TranCont({
   text,
@@ -18,6 +19,8 @@ export default function TranCont({
   simpleStyle = false,
 }) {
   const i18n = useI18n();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const [trText, setTrText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -60,9 +63,18 @@ export default function TranCont({
         {error ? (
           <Alert severity="error">{error}</Alert>
         ) : loading ? (
-          <CircularProgress size={16} />
+          <Box sx={{ display: "flex", justifyContent: "center", py: 1 }}>
+            <CircularProgress size={18} sx={{ color: theme.palette.primary.main }} />
+          </Box>
         ) : (
-          <Typography style={{ whiteSpace: "pre-line" }}>{trText}</Typography>
+          <Typography 
+            sx={{ 
+              whiteSpace: "pre-line",
+              lineHeight: 1.6,
+            }}
+          >
+            {trText}
+          </Typography>
         )}
       </Box>
     );
@@ -74,16 +86,34 @@ export default function TranCont({
 
   return (
     <Box>
+      <style>
+        {`
+          @keyframes kt-result-fade-in {
+            from {
+              opacity: 0;
+              transform: translateY(4px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .KT-trancont-result {
+            animation: kt-result-fade-in 0.3s ease-out;
+          }
+        `}
+      </style>
       <TextField
         size="small"
         label={`${i18n("translated_text")} - ${apiSetting.apiName || apiSetting.apiSlug}`}
-        // disabled
         fullWidth
         multiline
         value={trText}
         helperText={error}
         InputProps={{
-          startAdornment: loading ? <CircularProgress size={16} /> : null,
+          startAdornment: loading ? (
+            <CircularProgress size={16} sx={{ color: theme.palette.primary.main }} />
+          ) : null,
           endAdornment: (
             <Stack
               direction="row"
@@ -96,6 +126,37 @@ export default function TranCont({
               <CopyBtn text={trText} title={i18n("copy")} />
             </Stack>
           ),
+        }}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            transition: "all 0.25s ease",
+            background: isDark
+              ? "linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, rgba(32, 156, 238, 0.02) 100%)"
+              : "linear-gradient(135deg, rgba(32, 156, 238, 0.02) 0%, rgba(0, 212, 255, 0.01) 100%)",
+            borderRadius: "10px",
+            "&:hover": {
+              boxShadow: isDark
+                ? "0 0 0 1px rgba(0, 212, 255, 0.2), 0 2px 8px rgba(0, 212, 255, 0.1)"
+                : "0 0 0 1px rgba(32, 156, 238, 0.15), 0 2px 8px rgba(32, 156, 238, 0.08)",
+            },
+            "&.Mui-focused": {
+              boxShadow: isDark
+                ? "0 0 0 2px rgba(0, 212, 255, 0.25), 0 4px 16px rgba(0, 212, 255, 0.15)"
+                : "0 0 0 2px rgba(32, 156, 238, 0.2), 0 4px 16px rgba(32, 156, 238, 0.1)",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            fontWeight: 500,
+            "&.Mui-focused": {
+              color: theme.palette.primary.main,
+            },
+          },
+          "& .MuiInputBase-input": {
+            lineHeight: 1.6,
+          },
+        }}
+        InputLabelProps={{
+          shrink: true,
         }}
       />
     </Box>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { isMobile } from "../../libs/mobile";
 import { useTheme, alpha } from "@mui/material/styles";
@@ -157,16 +156,24 @@ export default function DraggableResizable({
   const lineWidth = 4;
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
-  //dark模式日食效果,突出显示翻译小窗口
+  
   const glowShadow = isDark
     ? `
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 0 10px 2px rgba(255,255,255,0.18),
-        0 8px 32px rgba(0,0,0,0.35)
+        0 0 1px rgba(0, 212, 255, 0.8),
+        0 0 4px rgba(0, 212, 255, 0.4),
+        0 0 8px rgba(32, 156, 238, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.5)
       `
     : ` 
-        0 4px 18px rgba(0, 0, 0, 0.15)
+        0 0 1px rgba(32, 156, 238, 0.6),
+        0 0 4px rgba(32, 156, 238, 0.2),
+        0 4px 20px rgba(0, 0, 0, 0.15)
       `;
+  
+  const gradientBorder = isDark
+    ? "linear-gradient(135deg, #00d4ff 0%, #209CEE 25%, #00d4ff 50%, #209CEE 75%, #00d4ff 100%)"
+    : "linear-gradient(135deg, #209CEE 0%, #00d4ff 25%, #209CEE 50%, #00d4ff 75%, #209CEE 100%)";
+    
   const opts = {
     size,
     setSize,
@@ -188,11 +195,82 @@ export default function DraggableResizable({
         gridTemplateColumns: `${lineWidth * 2}px auto ${lineWidth * 2}px`,
         gridTemplateRows: `${lineWidth * 2}px auto ${lineWidth * 2}px`,
         zIndex: 2147483647,
-        borderRadius: "12px",
+        borderRadius: "14px",
         overflow: "hidden",
       }}
       {...props}
     >
+      <style>
+        {`
+          @keyframes kt-border-flow {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+          @keyframes kt-glow-pulse {
+            0%, 100% {
+              opacity: 0.6;
+            }
+            50% {
+              opacity: 1;
+            }
+          }
+          .KT-draggable-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            padding: 1.5px;
+            background: ${gradientBorder};
+            background-size: 300% 300%;
+            animation: kt-border-flow 4s ease infinite;
+            -webkit-mask: 
+              linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+            mask: 
+              linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+          }
+          .KT-draggable-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: 16px;
+            background: ${gradientBorder};
+            background-size: 300% 300%;
+            animation: kt-border-flow 4s ease infinite, kt-glow-pulse 3s ease-in-out infinite;
+            filter: blur(8px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: -1;
+          }
+          .KT-draggable-body {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            background: ${isDark 
+              ? "linear-gradient(180deg, rgba(22, 33, 62, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%)" 
+              : `linear-gradient(180deg, ${theme.palette.background.paper} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`};
+            box-shadow: ${glowShadow};
+          }
+          .KT-draggable-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+          }
+        `}
+      </style>
       <Pointer
         direction="TopLeft"
         style={{
@@ -227,16 +305,11 @@ export default function DraggableResizable({
         }}
         {...opts}
       />
-      <Paper
+      <Box
         className="KT-draggable-body"
-        elevation={4}
-        sx={{
-          borderRadius: 4,
-          overflow: "hidden",
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: glowShadow,
-        }}
       >
+        <div className="KT-draggable-glow" />
+        <div className="KT-draggable-border" />
         <Pointer
           className="KT-draggable-header"
           direction="Header"
@@ -265,7 +338,7 @@ export default function DraggableResizable({
 
             return {
               ...containerStyle,
-              backgroundColor: theme.palette.background.paper,
+              backgroundColor: "transparent",
               "&::-webkit-scrollbar": {
                 width: 10,
                 height: 10,
@@ -281,7 +354,6 @@ export default function DraggableResizable({
               "&::-webkit-scrollbar-thumb:hover": {
                 backgroundColor: alpha(theme.palette.text.primary, 0.36),
               },
-              // firefox
               scrollbarWidth: "thin",
               scrollbarColor: `${scrollbarThumbColor} ${scrollbarTrackColor}`,
             };
@@ -289,7 +361,7 @@ export default function DraggableResizable({
         >
           {children}
         </Box>
-      </Paper>
+      </Box>
       <Pointer
         direction="Right"
         style={{

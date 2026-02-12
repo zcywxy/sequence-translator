@@ -26,6 +26,9 @@ import { tryClearCaches } from "../../libs/cache";
 import { kissLog } from "../../libs/log";
 import { getDomainOptions, truncateMiddle } from "../../libs/url";
 import { useAllTextStyles } from "../../hooks/CustomStyles";
+import TranForm from "../Selection/TranForm";
+import Divider from "@mui/material/Divider";
+import { useTheme, alpha } from "@mui/material/styles";
 
 export default function PopupCont({
   rule,
@@ -34,13 +37,17 @@ export default function PopupCont({
   setSetting,
   processActions,
   isContent = false,
+  isSeparate = false,
 }) {
   const i18n = useI18n();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const [commands, setCommands] = useState({});
   const [domainOptions, setDomainOptions] = useState([]);
   const [selectedDomain, setSelectedDomain] = useState("");
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
   const { allTextStyles } = useAllTextStyles();
+  const [text, setText] = useState("");
 
   const handleTransToggle = async (e) => {
     try {
@@ -209,236 +216,309 @@ export default function PopupCont({
     hasRichText,
     hasShadowroot,
     isPlainText = false,
-  } = rule;
+  } = rule || {};
+
+  const tranboxSetting = setting?.tranboxSetting || {};
+  const transApis = setting?.transApis || [];
+  const langDetector = setting?.langDetector || "-";
+
+  const textFieldSx = useMemo(() => ({
+    "& .MuiOutlinedInput-root": {
+      transition: "all 0.25s ease",
+      borderRadius: "10px",
+      background: isDark
+        ? "linear-gradient(135deg, rgba(0, 212, 255, 0.02) 0%, rgba(32, 156, 238, 0.01) 100%)"
+        : "linear-gradient(135deg, rgba(32, 156, 238, 0.01) 0%, rgba(0, 212, 255, 0.005) 100%)",
+      "&:hover": {
+        boxShadow: isDark
+          ? "0 0 0 1px rgba(0, 212, 255, 0.15)"
+          : "0 0 0 1px rgba(32, 156, 238, 0.1)",
+      },
+      "&.Mui-focused": {
+        boxShadow: isDark
+          ? "0 0 0 2px rgba(0, 212, 255, 0.2), 0 2px 12px rgba(0, 212, 255, 0.1)"
+          : "0 0 0 2px rgba(32, 156, 238, 0.15), 0 2px 12px rgba(32, 156, 238, 0.08)",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      fontWeight: 500,
+      fontSize: "0.8rem",
+      "&.Mui-focused": {
+        color: theme.palette.primary.main,
+      },
+    },
+    "& .MuiSelect-select": {
+      fontSize: "0.875rem",
+    },
+    "& .MuiMenuItem-root": {
+      fontSize: "0.875rem",
+    },
+  }), [isDark, theme.palette.primary.main]);
+
+  if (!rule || !setting) {
+    return null;
+  }
 
   return (
     <Stack sx={{ p: 2 }} spacing={2}>
-      <Grid container columns={12} spacing={1}>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={transOpen === "true"}
-                onChange={handleTransToggle}
-              />
-            }
-            label={
-              commands["toggleTranslate"]
-                ? `${i18n("translate_alt")}(${commands["toggleTranslate"]})`
-                : i18n("translate_alt")
-            }
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="autoScan"
-                value={autoScan === "true" ? "false" : "true"}
-                checked={autoScan === "true"}
-                onChange={handleChange}
-              />
-            }
-            label={i18n("autoscan_alt")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="hasShadowroot"
-                value={hasShadowroot === "true" ? "false" : "true"}
-                checked={hasShadowroot === "true"}
-                onChange={handleChange}
-              />
-            }
-            label={i18n("shadowroot_alt")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="hasRichText"
-                value={hasRichText === "true" ? "false" : "true"}
-                checked={hasRichText === "true"}
-                onChange={handleChange}
-              />
-            }
-            label={i18n("richtext_alt")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="transOnly"
-                value={transOnly === "true" ? "false" : "true"}
-                checked={transOnly === "true"}
-                onChange={handleChange}
-              />
-            }
-            label={i18n("transonly_alt")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="tranboxEnabled"
-                value={!tranboxEnabled}
-                checked={tranboxEnabled}
-                onChange={handleTransboxToggle}
-              />
-            }
-            label={i18n("selection_translate")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="inputTransEnabled"
-                value={!inputTransEnabled}
-                checked={inputTransEnabled}
-                onChange={handleInputTransToggle}
-              />
-            }
-            label={i18n("input_translate")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                name="isPlainText"
-                value={!isPlainText}
-                checked={isPlainText}
-                onChange={handleChange}
-              />
-            }
-            label={i18n("plain_text_translate")}
-          />
-        </Grid>
-      </Grid>
+      <TranForm
+        text={text}
+        setText={setText}
+        apiSlugs={tranboxSetting.apiSlugs || []}
+        fromLang={tranboxSetting.fromLang || "auto"}
+        toLang={tranboxSetting.toLang || "zh-CN"}
+        toLang2={tranboxSetting.toLang2 || "-"}
+        transApis={transApis}
+        simpleStyle={false}
+        langDetector={langDetector}
+        enDict={tranboxSetting.enDict}
+        enSug={tranboxSetting.enSug}
+      />
 
-      <Stack direction="row" spacing={2}>
-        <TextField
-          select
-          SelectProps={{ MenuProps: { disablePortal: true } }}
-          size="small"
-          value={fromLang}
-          name="fromLang"
-          label={i18n("from_lang")}
-          onChange={handleChange}
-          fullWidth
-        >
-          {OPT_LANGS_FROM.map(([lang, name]) => (
-            <MenuItem key={lang} value={lang}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
+      {!isSeparate && (
+        <>
+          <Divider 
+            sx={{ 
+              my: 1,
+              borderColor: isDark 
+                ? "rgba(255, 255, 255, 0.08)" 
+                : "rgba(0, 0, 0, 0.08)",
+            }} 
+          />
 
-        <TextField
-          select
-          SelectProps={{ MenuProps: { disablePortal: true } }}
-          size="small"
-          value={toLang}
-          name="toLang"
-          label={i18n("to_lang")}
-          onChange={handleChange}
-          fullWidth
-        >
-          {OPT_LANGS_TO.map(([lang, name]) => (
-            <MenuItem key={lang} value={lang}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Stack>
+          <Grid container columns={12} spacing={1}>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={transOpen === "true"}
+                    onChange={handleTransToggle}
+                  />
+                }
+                label={
+                  commands["toggleTranslate"]
+                    ? `${i18n("translate_alt")}(${commands["toggleTranslate"]})`
+                    : i18n("translate_alt")
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="autoScan"
+                    value={autoScan === "true" ? "false" : "true"}
+                    checked={autoScan === "true"}
+                    onChange={handleChange}
+                  />
+                }
+                label={i18n("autoscan_alt")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="hasShadowroot"
+                    value={hasShadowroot === "true" ? "false" : "true"}
+                    checked={hasShadowroot === "true"}
+                    onChange={handleChange}
+                  />
+                }
+                label={i18n("shadowroot_alt")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="hasRichText"
+                    value={hasRichText === "true" ? "false" : "true"}
+                    checked={hasRichText === "true"}
+                    onChange={handleChange}
+                  />
+                }
+                label={i18n("richtext_alt")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="transOnly"
+                    value={transOnly === "true" ? "false" : "true"}
+                    checked={transOnly === "true"}
+                    onChange={handleChange}
+                  />
+                }
+                label={i18n("transonly_alt")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="tranboxEnabled"
+                    value={!tranboxEnabled}
+                    checked={tranboxEnabled}
+                    onChange={handleTransboxToggle}
+                  />
+                }
+                label={i18n("selection_translate")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="inputTransEnabled"
+                    value={!inputTransEnabled}
+                    checked={inputTransEnabled}
+                    onChange={handleInputTransToggle}
+                  />
+                }
+                label={i18n("input_translate")}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    name="isPlainText"
+                    value={!isPlainText}
+                    checked={isPlainText}
+                    onChange={handleChange}
+                  />
+                }
+                label={i18n("plain_text_translate")}
+              />
+            </Grid>
+          </Grid>
 
-      <Stack direction="row" spacing={2}>
-        <TextField
-          select
-          SelectProps={{ MenuProps: { disablePortal: true } }}
-          size="small"
-          value={apiSlug}
-          name="apiSlug"
-          label={i18n("translate_service")}
-          onChange={handleChange}
-          fullWidth
-        >
-          {optApis.map(({ key, name }) => (
-            <MenuItem key={key} value={key}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              select
+              SelectProps={{ MenuProps: { disablePortal: true } }}
+              size="small"
+              value={fromLang}
+              name="fromLang"
+              label={i18n("from_lang")}
+              onChange={handleChange}
+              fullWidth
+              sx={textFieldSx}
+            >
+              {OPT_LANGS_FROM.map(([lang, name]) => (
+                <MenuItem key={lang} value={lang}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
 
-        <TextField
-          select
-          SelectProps={{ MenuProps: { disablePortal: true } }}
-          size="small"
-          value={textStyle}
-          name="textStyle"
-          label={
-            commands["toggleStyle"]
-              ? `${i18n("text_style_alt")}(${commands["toggleStyle"]})`
-              : i18n("text_style_alt")
-          }
-          onChange={handleChange}
-          fullWidth
-        >
-          {allTextStyles.map((item) => (
-            <MenuItem key={item.styleSlug} value={item.styleSlug}>
-              {item.styleName}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Stack>
+            <TextField
+              select
+              SelectProps={{ MenuProps: { disablePortal: true } }}
+              size="small"
+              value={toLang}
+              name="toLang"
+              label={i18n("to_lang")}
+              onChange={handleChange}
+              fullWidth
+              sx={textFieldSx}
+            >
+              {OPT_LANGS_TO.map(([lang, name]) => (
+                <MenuItem key={lang} value={lang}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
 
-      <Stack>
-        <TextField
-          select
-          SelectProps={{ MenuProps: { disablePortal: true } }}
-          size="small"
-          value={selectedDomain}
-          label={i18n("domain")}
-          onChange={(e) => setSelectedDomain(e.target.value)}
-          fullWidth
-          sx={{ mb: 1 }}
-        >
-          {domainOptions.map((domain) => (
-            <MenuItem key={domain} value={domain} title={domain}>
-              {truncateMiddle(domain)}
-            </MenuItem>
-          ))}
-        </TextField>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Button
-            variant="text"
-            onClick={handleSaveRule}
-            disabled={domainOptions.length === 0}
-          >
-            {i18n("save_rule")}
-          </Button>
-          <Button variant="text" onClick={handleClearCache}>
-            {i18n("clear_cache")}
-          </Button>
-        </Stack>
-      </Stack>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              select
+              SelectProps={{ MenuProps: { disablePortal: true } }}
+              size="small"
+              value={apiSlug}
+              name="apiSlug"
+              label={i18n("translate_service")}
+              onChange={handleChange}
+              fullWidth
+              sx={textFieldSx}
+            >
+              {optApis.map(({ key, name }) => (
+                <MenuItem key={key} value={key}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              select
+              SelectProps={{ MenuProps: { disablePortal: true } }}
+              size="small"
+              value={textStyle}
+              name="textStyle"
+              label={
+                commands["toggleStyle"]
+                  ? `${i18n("text_style_alt")}(${commands["toggleStyle"]})`
+                  : i18n("text_style_alt")
+              }
+              onChange={handleChange}
+              fullWidth
+              sx={textFieldSx}
+            >
+              {allTextStyles.map((item) => (
+                <MenuItem key={item.styleSlug} value={item.styleSlug}>
+                  {item.styleName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
+
+          <Stack>
+            <TextField
+              select
+              SelectProps={{ MenuProps: { disablePortal: true } }}
+              size="small"
+              value={selectedDomain}
+              label={i18n("domain")}
+              onChange={(e) => setSelectedDomain(e.target.value)}
+              fullWidth
+              sx={{ mb: 1, ...textFieldSx }}
+            >
+              {domainOptions.map((domain) => (
+                <MenuItem key={domain} value={domain} title={domain}>
+                  {truncateMiddle(domain)}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                variant="text"
+                onClick={handleSaveRule}
+                disabled={domainOptions.length === 0}
+              >
+                {i18n("save_rule")}
+              </Button>
+              <Button variant="text" onClick={handleClearCache}>
+                {i18n("clear_cache")}
+              </Button>
+            </Stack>
+          </Stack>
+        </>
+      )}
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}

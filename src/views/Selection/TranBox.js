@@ -23,7 +23,6 @@ import { MSG_OPEN_SEPARATE_WINDOW } from "../../config/msg.js";
 import { sendBgMsg } from "../../libs/msg.js";
 import { isExt } from "../../libs/client.js";
 import { useTheme, alpha } from "@mui/material/styles";
-import Logo from '../../components/Logo';
 
 function Header({
   setShowBox,
@@ -37,6 +36,7 @@ function Header({
 }) {
   const theme = useTheme();
   const i18n = useI18n();
+  const isDark = theme.palette.mode === "dark";
 
   const iconColor = theme.palette.text.secondary;
   const buttonHoverBg = theme.palette.action.hover;
@@ -48,18 +48,31 @@ function Header({
   const blurOnLeave = (e) => e.currentTarget.blur();
 
   const baseBtnStyle = {
-    borderRadius: "6px",
-    padding: "5px",
-    minWidth: "30px",
-    minHeight: "30px",
-    transition: "all 0.2s ease",
+    borderRadius: "8px",
+    padding: "6px",
+    minWidth: "32px",
+    minHeight: "32px",
+    transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
     backgroundColor: "transparent",
+    position: "relative",
+    overflow: "hidden",
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      inset: 0,
+      borderRadius: "8px",
+      background: isDark
+        ? "linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%)"
+        : "linear-gradient(135deg, rgba(32, 156, 238, 0.08) 0%, transparent 100%)",
+      opacity: 0,
+      transition: "opacity 0.25s ease",
+    },
     "& svg": {
       color: iconColor,
+      transition: "all 0.25s ease",
     },
   };
 
-  // 移动端不显示标题栏
   if (isMobile) {
     return null;
   }
@@ -69,12 +82,26 @@ function Header({
       onMouseUp={(e) => e.stopPropagation()}
       onTouchEnd={(e) => e.stopPropagation()}
       sx={{
-        backgroundColor: theme.palette.background.default,
-        padding: "4px 8px 4px 12px",
-        height: "36px",
+        background: isDark
+          ? "linear-gradient(180deg, rgba(22, 33, 62, 0.95) 0%, rgba(26, 26, 46, 0.9) 100%)"
+          : `linear-gradient(180deg, ${theme.palette.background.paper} 0%, ${alpha(theme.palette.background.paper, 0.95)} 100%)`,
+        padding: "6px 10px 6px 14px",
+        height: "40px",
         display: "flex",
         alignItems: "center",
         minHeight: "auto",
+        position: "relative",
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "1px",
+          background: isDark
+            ? "linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent)"
+            : "linear-gradient(90deg, transparent, rgba(32, 156, 238, 0.2), transparent)",
+        },
       }}
     >
       <Stack
@@ -87,41 +114,24 @@ function Header({
           height: "100%",
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Box
+        {!simpleStyle && (
+          <Typography
+            variant="caption"
             sx={{
-              width: 18,
-              height: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "4px",
-              backgroundColor: theme.palette.background.paper,
-              border: `1px solid ${theme.palette.divider}`,
-              transition: "all 0.2s ease",
-              "&:hover": {
-                boxShadow: theme.shadows[2],
-                transform: "translateY(-1px)",
-                backgroundColor: theme.palette.action.hover,
-              },
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.3px",
+              background: isDark
+                ? "linear-gradient(135deg, rgba(0, 212, 255, 0.8) 0%, rgba(32, 156, 238, 0.6) 100%)"
+                : "linear-gradient(135deg, #209CEE 0%, #00d4ff 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
             }}
           >
-            <Logo size={16} />
-          </Box>
-
-          {!simpleStyle && (
-            <Typography
-              variant="caption"
-              sx={{
-                fontWeight: 500,
-                fontSize: "12px",
-                color: theme.palette.text.secondary,
-              }}
-            >
-              {`${process.env.REACT_APP_NAME} v${process.env.REACT_APP_VERSION}`}
-            </Typography>
-          )}
-        </Stack>
+            {`${process.env.REACT_APP_NAME} v${process.env.REACT_APP_VERSION}`}
+          </Typography>
+        )}
 
         <Stack direction="row" alignItems="center" spacing={0.5}>
           {isExt && (
@@ -133,14 +143,18 @@ function Header({
               sx={{
                 ...baseBtnStyle,
                 "&:hover": {
-                  backgroundColor: theme.palette.primary.light + "20",
-                  transform: "scale(1.05)",
-                  boxShadow: theme.shadows[2],
-                  "& svg": { color: theme.palette.primary.main },
+                  "&::before": { opacity: 1 },
+                  transform: "translateY(-1px)",
+                  boxShadow: isDark
+                    ? "0 4px 12px rgba(0, 212, 255, 0.2)"
+                    : "0 4px 12px rgba(32, 156, 238, 0.15)",
+                  "& svg": { 
+                    color: theme.palette.primary.main,
+                    transform: "scale(1.1)",
+                  },
                 },
                 "&:active": {
-                  transform: "scale(0.95)",
-                  backgroundColor: theme.palette.primary.light + "40",
+                  transform: "translateY(0) scale(0.95)",
                 },
               }}
             >
@@ -156,14 +170,18 @@ function Header({
             sx={{
               ...baseBtnStyle,
               "&:hover": {
-                backgroundColor: theme.palette.success.light + "20",
-                transform: "scale(1.05)",
-                boxShadow: theme.shadows[2],
-                "& svg": { color: theme.palette.success.main },
+                "&::before": { opacity: 1 },
+                transform: "translateY(-1px)",
+                boxShadow: isDark
+                  ? "0 4px 12px rgba(16, 185, 129, 0.2)"
+                  : "0 4px 12px rgba(16, 185, 129, 0.15)",
+                "& svg": { 
+                  color: theme.palette.success.main,
+                  transform: "scale(1.1)",
+                },
               },
               "&:active": {
-                transform: "scale(0.95)",
-                backgroundColor: theme.palette.success.light + "40",
+                transform: "translateY(0) scale(0.95)",
               },
             }}
           >
@@ -182,14 +200,18 @@ function Header({
             sx={{
               ...baseBtnStyle,
               "&:hover": {
-                backgroundColor: theme.palette.warning.light + "20",
-                transform: "scale(1.05)",
-                boxShadow: theme.shadows[2],
-                "& svg": { color: theme.palette.warning.main },
+                "&::before": { opacity: 1 },
+                transform: "translateY(-1px)",
+                boxShadow: isDark
+                  ? "0 4px 12px rgba(245, 158, 11, 0.2)"
+                  : "0 4px 12px rgba(245, 158, 11, 0.15)",
+                "& svg": { 
+                  color: theme.palette.warning.main,
+                  transform: "scale(1.1)",
+                },
               },
               "&:active": {
-                transform: "scale(0.95)",
-                backgroundColor: theme.palette.warning.light + "40",
+                transform: "translateY(0) scale(0.95)",
               },
             }}
           >
@@ -208,14 +230,18 @@ function Header({
             sx={{
               ...baseBtnStyle,
               "&:hover": {
-                backgroundColor: theme.palette.info.light + "20",
-                transform: "scale(1.05)",
-                boxShadow: theme.shadows[2],
-                "& svg": { color: theme.palette.info.main },
+                "&::before": { opacity: 1 },
+                transform: "translateY(-1px)",
+                boxShadow: isDark
+                  ? "0 4px 12px rgba(0, 212, 255, 0.2)"
+                  : "0 4px 12px rgba(32, 156, 238, 0.15)",
+                "& svg": { 
+                  color: theme.palette.info.main,
+                  transform: "scale(1.1)",
+                },
               },
               "&:active": {
-                transform: "scale(0.95)",
-                backgroundColor: theme.palette.info.light + "40",
+                transform: "translateY(0) scale(0.95)",
               },
             }}
           >
@@ -234,14 +260,18 @@ function Header({
             sx={{
               ...baseBtnStyle,
               "&:hover": {
-                backgroundColor: theme.palette.error.light + "20",
-                transform: "scale(1.05)",
-                boxShadow: theme.shadows[2],
-                "& svg": { color: theme.palette.error.main },
+                "&::before": { opacity: 1 },
+                transform: "translateY(-1px)",
+                boxShadow: isDark
+                  ? "0 4px 12px rgba(239, 68, 68, 0.2)"
+                  : "0 4px 12px rgba(239, 68, 68, 0.15)",
+                "& svg": { 
+                  color: theme.palette.error.main,
+                  transform: "scale(1.1)",
+                },
               },
               "&:active": {
-                transform: "scale(0.95)",
-                backgroundColor: theme.palette.error.light + "40",
+                transform: "translateY(0) scale(0.95)",
               },
             }}
           >

@@ -20,6 +20,7 @@ import CopyBtn from "./CopyBtn";
 import { isValidWord } from "../../libs/utils";
 import { kissLog } from "../../libs/log";
 import { tryDetectLang } from "../../libs/detect";
+import { useTheme, alpha } from "@mui/material/styles";
 
 export default function TranForm({
   text,
@@ -32,8 +33,12 @@ export default function TranForm({
   simpleStyle = false,
   langDetector: initLangDetector = "-",
   isPlaygound = false,
+  enDict,
+  enSug,
 }) {
   const i18n = useI18n();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState(text);
@@ -130,6 +135,52 @@ export default function TranForm({
   const xs = useMemo(() => (isPlaygound ? 6 : 4), [isPlaygound]);
   const md = useMemo(() => (isPlaygound ? 3 : 4), [isPlaygound]);
 
+  const textFieldSx = useMemo(() => ({
+    "& .MuiOutlinedInput-root": {
+      transition: "all 0.25s ease",
+      borderRadius: "10px",
+      background: isDark
+        ? "linear-gradient(135deg, rgba(0, 212, 255, 0.02) 0%, rgba(32, 156, 238, 0.01) 100%)"
+        : "linear-gradient(135deg, rgba(32, 156, 238, 0.01) 0%, rgba(0, 212, 255, 0.005) 100%)",
+      "&:hover": {
+        boxShadow: isDark
+          ? "0 0 0 1px rgba(0, 212, 255, 0.15)"
+          : "0 0 0 1px rgba(32, 156, 238, 0.1)",
+      },
+      "&.Mui-focused": {
+        boxShadow: isDark
+          ? "0 0 0 2px rgba(0, 212, 255, 0.2), 0 2px 12px rgba(0, 212, 255, 0.1)"
+          : "0 0 0 2px rgba(32, 156, 238, 0.15), 0 2px 12px rgba(32, 156, 238, 0.08)",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      fontWeight: 500,
+      fontSize: "0.8rem",
+      "&.Mui-focused": {
+        color: theme.palette.primary.main,
+      },
+    },
+    "& .MuiSelect-select": {
+      fontSize: "0.875rem",
+    },
+    "& .MuiMenuItem-root": {
+      fontSize: "0.875rem",
+    },
+  }), [isDark, theme.palette.primary.main]);
+
+  const originalTextFieldSx = useMemo(() => ({
+    ...textFieldSx,
+    "& .MuiOutlinedInput-root": {
+      ...textFieldSx["& .MuiOutlinedInput-root"],
+      background: isDark
+        ? "linear-gradient(135deg, rgba(0, 212, 255, 0.04) 0%, rgba(32, 156, 238, 0.02) 100%)"
+        : "linear-gradient(135deg, rgba(32, 156, 238, 0.03) 0%, rgba(0, 212, 255, 0.01) 100%)",
+    },
+    "& .MuiInputBase-input": {
+      lineHeight: 1.6,
+    },
+  }), [textFieldSx, isDark]);
+
   return (
     <Stack spacing={simpleStyle ? 1 : 2}>
       {!simpleStyle && (
@@ -151,6 +202,7 @@ export default function TranForm({
                   onChange={(e) => {
                     setApiSlugs(e.target.value);
                   }}
+                  sx={textFieldSx}
                 >
                   {optApis.map(({ key, name }) => (
                     <MenuItem key={key} value={key}>
@@ -171,6 +223,7 @@ export default function TranForm({
                   onChange={(e) => {
                     setFromLang(e.target.value);
                   }}
+                  sx={textFieldSx}
                 >
                   {OPT_LANGS_FROM.map(([lang, name]) => (
                     <MenuItem key={lang} value={lang}>
@@ -191,6 +244,7 @@ export default function TranForm({
                   onChange={(e) => {
                     setToLang(e.target.value);
                   }}
+                  sx={textFieldSx}
                 >
                   {OPT_LANGS_TO.map(([lang, name]) => (
                     <MenuItem key={lang} value={lang}>
@@ -216,6 +270,7 @@ export default function TranForm({
                       onChange={(e) => {
                         setToLang2(e.target.value);
                       }}
+                      sx={textFieldSx}
                     >
                       {OPT_LANGS_TO.map(([lang, name]) => (
                         <MenuItem key={lang} value={lang}>
@@ -238,6 +293,7 @@ export default function TranForm({
                       onChange={(e) => {
                         setLangDetector(e.target.value);
                       }}
+                      sx={textFieldSx}
                     >
                       <MenuItem value={"-"}>{i18n("disable")}</MenuItem>
                       {OPT_LANGDETECTOR_ALL.map((item) => (
@@ -257,9 +313,10 @@ export default function TranForm({
                       disabled
                       InputProps={{
                         startAdornment: deLoading ? (
-                          <CircularProgress size={16} />
+                          <CircularProgress size={16} sx={{ color: theme.palette.primary.main }} />
                         ) : null,
                       }}
+                      sx={textFieldSx}
                     />
                   </Grid>
                 </>
@@ -306,6 +363,13 @@ export default function TranForm({
                           setText(editText.trim());
                         }}
                         title={i18n("submit")}
+                        sx={{
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            color: theme.palette.primary.main,
+                            transform: "scale(1.1)",
+                          },
+                        }}
                       >
                         <DoneIcon fontSize="inherit" />
                       </IconButton>
@@ -316,12 +380,23 @@ export default function TranForm({
                         size="small"
                         onClick={handlePaste}
                         title={i18n("paste")}
+                        sx={{
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            color: theme.palette.primary.main,
+                            transform: "scale(1.1)",
+                          },
+                        }}
                       >
                         <ContentPasteIcon fontSize="inherit" />
                       </IconButton>
                     )}
                   </Stack>
                 ),
+              }}
+              sx={originalTextFieldSx}
+              InputLabelProps={{
+                shrink: true,
               }}
             />
           </Box>
