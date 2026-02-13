@@ -1,9 +1,3 @@
-/**
- * 移除 Markdown 代码块标记
- * @param {string} text 原始文本
- * @param {boolean} startOnly 是否只处理开头
- * @returns {string} 移除代码块标记后的文本
- */
 export function stripMarkdownCodeBlock(text, startOnly = false) {
   if (!text) return "";
   let result = text.replace(/^```[a-z]*\s*\n?/i, "");
@@ -13,13 +7,6 @@ export function stripMarkdownCodeBlock(text, startOnly = false) {
   return result;
 }
 
-/**
- * 限制数字大小
- * @param {*} num
- * @param {*} min
- * @param {*} max
- * @returns
- */
 export const limitNumber = (num, min = 0, max = 100) => {
   const number = parseInt(num);
   if (Number.isNaN(number) || number < min) {
@@ -40,12 +27,6 @@ export const limitFloat = (num, min = 0.0, max = 100.0) => {
   return number;
 };
 
-/**
- * 匹配是否为数组中的值
- * @param {*} arr
- * @param {*} val
- * @returns
- */
 export const matchValue = (arr, val) => {
   if (arr.length === 0 || arr.includes(val)) {
     return val;
@@ -53,11 +34,6 @@ export const matchValue = (arr, val) => {
   return arr[0];
 };
 
-/**
- * 等待
- * @param {*} delay
- * @returns
- */
 export const sleep = (delay) =>
   new Promise((resolve) => {
     const timer = setTimeout(() => {
@@ -66,12 +42,6 @@ export const sleep = (delay) =>
     }, delay);
   });
 
-/**
- * 防抖函数
- * @param {*} func
- * @param {*} delay
- * @returns
- */
 export const debounce = (func, delay = 200) => {
   let timer = null;
 
@@ -91,76 +61,6 @@ export const debounce = (func, delay = 200) => {
   return debouncedFunc;
 };
 
-/**
- * 节流函数
- * @param {Function} func 要执行的函数
- * @param {number} delay 延迟时间
- * @param {object} options 选项 { leading: boolean, trailing: boolean }
- * @returns {Function}
- */
-export const throttle = (
-  func,
-  delay,
-  options = { leading: true, trailing: true }
-) => {
-  let timeoutId = null;
-  let lastArgs = null;
-  let lastThis = null;
-  let result;
-  let previous = 0;
-
-  function later() {
-    previous = options.leading === false ? 0 : Date.now();
-    timeoutId = null;
-    result = func.apply(lastThis, lastArgs);
-    if (!timeoutId) {
-      lastThis = lastArgs = null;
-    }
-  }
-
-  const throttled = function (...args) {
-    const now = Date.now();
-    if (!previous && options.leading === false) {
-      previous = now;
-    }
-
-    const remaining = delay - (now - previous);
-    lastArgs = args;
-    lastThis = this;
-
-    if (remaining <= 0 || remaining > delay) {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-      previous = now;
-      result = func.apply(lastThis, lastArgs);
-      if (!timeoutId) {
-        lastThis = lastArgs = null;
-      }
-    } else if (!timeoutId && options.trailing !== false) {
-      timeoutId = setTimeout(later, remaining);
-    }
-    return result;
-  };
-
-  throttled.cancel = () => {
-    clearTimeout(timeoutId);
-    previous = 0;
-    timeoutId = null;
-    lastThis = lastArgs = null;
-  };
-
-  return throttled;
-};
-
-/**
- * 判断字符串全是某个字符
- * @param {*} s
- * @param {*} c
- * @param {*} i
- * @returns
- */
 export const isAllchar = (s, c, i = 0) => {
   while (i < s.length) {
     if (s[i] !== c) {
@@ -171,12 +71,6 @@ export const isAllchar = (s, c, i = 0) => {
   return true;
 };
 
-/**
- * 字符串通配符(*)匹配
- * @param {*} s
- * @param {*} p
- * @returns
- */
 export const isMatch = (s, p) => {
   if (s.length === 0 || p.length === 0) {
     return false;
@@ -208,21 +102,11 @@ export const isMatch = (s, p) => {
   return isAllchar(p, "*", pIndex);
 };
 
-/**
- * 类型检查
- * @param {*} o
- * @returns
- */
 export const type = (o) => {
   const s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
 
-/**
- * sha256
- * @param {*} text
- * @returns
- */
 export const sha256 = async (text, salt) => {
   const data = new TextEncoder().encode(text + salt);
   const digest = await crypto.subtle.digest({ name: "SHA-256" }, data);
@@ -231,30 +115,13 @@ export const sha256 = async (text, salt) => {
     .join("");
 };
 
-/**
- * 生成随机事件名称
- * @returns
- */
 export const genEventName = () => `kiss-${btoa(Math.random()).slice(3, 11)}`;
 
-/**
- * 判断两个 Set 是否相同
- * @param {*} a
- * @param {*} b
- * @returns
- */
 export const isSameSet = (a, b) => {
   const s = new Set([...a, ...b]);
   return s.size === a.size && s.size === b.size;
 };
 
-/**
- * 去掉字符串末尾某个字符
- * @param {*} s
- * @param {*} c
- * @param {*} count
- * @returns
- */
 export const removeEndchar = (s, c, count = 1) => {
   if (!s) return "";
 
@@ -265,12 +132,6 @@ export const removeEndchar = (s, c, count = 1) => {
   return s.slice(0, i);
 };
 
-/**
- * 匹配字符串及语言标识
- * @param {*} str
- * @param {*} sign
- * @returns
- */
 export const matchInputStr = (str, sign) => {
   switch (sign) {
     case "//":
@@ -288,21 +149,11 @@ export const matchInputStr = (str, sign) => {
   return str.match(/\/([\w-]+)\s+([^]+)/);
 };
 
-/**
- * 判断是否英文单词
- * @param {*} str
- * @returns
- */
 export const isValidWord = (str) => {
   const regex = /^[a-zA-Z-]+$/;
   return regex.test(str);
 };
 
-/**
- * blob转为base64
- * @param {*} blob
- * @returns
- */
 export const blobToBase64 = (blob) => {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -311,28 +162,6 @@ export const blobToBase64 = (blob) => {
   });
 };
 
-/**
- * 获取html内的文本
- * @param {*} htmlStr
- * @param {*} skipTag
- * @returns
- */
-export const getHtmlText = (htmlStr, skipTag = "") => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlStr, "text/html");
-
-  if (skipTag) {
-    doc.querySelectorAll(skipTag).forEach((el) => el.remove());
-  }
-
-  return doc.body.innerText.trim();
-};
-
-/**
- * 解析JSON字符串对象
- * @param {*} str
- * @returns
- */
 export const parseJsonObj = (str) => {
   if (!str || type(str) !== "string") {
     return {};
@@ -350,23 +179,12 @@ export const parseJsonObj = (str) => {
   return {};
 };
 
-/**
- * 提取json内容
- * @param {*} s
- * @returns
- */
 export const extractJson = (raw) => {
   const jsonRegex = /({.*}|\[.*\])/s;
   const match = raw.match(jsonRegex);
   return match ? match[0] : null;
 };
 
-/**
- * 空闲执行
- * @param {*} cb
- * @param {*} timeout
- * @returns
- */
 export const scheduleIdle = (cb, timeout = 200) => {
   if (window.requestIdleCallback) {
     return requestIdleCallback(cb, { timeout });
@@ -374,29 +192,6 @@ export const scheduleIdle = (cb, timeout = 200) => {
   return setTimeout(cb, timeout);
 };
 
-/**
- * 截取url部分
- * @param {*} href
- * @returns
- */
-export const parseUrlPattern = (href) => {
-  if (href.startsWith("file")) {
-    const filename = href.substring(href.lastIndexOf("/") + 1);
-    return filename;
-  } else if (href.startsWith("http")) {
-    const url = new URL(href);
-    return url.host;
-  }
-  return href;
-};
-
-/**
- * 带超时的任务
- * @param {Promise|Function} task - 任务
- * @param {number} timeout - 超时时间 (毫秒)
- * @param {string} [timeoutMsg] - 超时错误提示
- * @returns {Promise}
- */
 export const withTimeout = (task, timeout, timeoutMsg = "Task timed out") => {
   const promise = typeof task === "function" ? task() : task;
   return Promise.race([
@@ -407,12 +202,6 @@ export const withTimeout = (task, timeout, timeoutMsg = "Task timed out") => {
   ]);
 };
 
-/**
- * 截短字符串
- * @param {*} str
- * @param {*} maxLength
- * @returns
- */
 export const truncateWords = (str, maxLength = 200) => {
   if (typeof str !== "string") return "";
   if (str.length <= maxLength) return str;
@@ -420,23 +209,6 @@ export const truncateWords = (str, maxLength = 200) => {
   return truncated.slice(0, truncated.lastIndexOf(" ")) + " …";
 };
 
-/**
- * 生成随机数
- * @param {*} min
- * @param {*} max
- * @param {*} integer
- * @returns
- */
-export const randomBetween = (min, max, integer = true) => {
-  const value = Math.random() * (max - min) + min;
-  return integer ? Math.floor(value) : value;
-};
-
-/**
- * 根据文件名自动获取 MIME 类型
- * @param {*} filename
- * @returns
- */
 function getMimeTypeFromFilename(filename) {
   const defaultType = "application/octet-stream";
   if (!filename || filename.indexOf(".") === -1) {
@@ -445,7 +217,6 @@ function getMimeTypeFromFilename(filename) {
 
   const extension = filename.split(".").pop().toLowerCase();
   const mimeMap = {
-    // 文本
     txt: "text/plain;charset=utf-8",
     html: "text/html;charset=utf-8",
     css: "text/css;charset=utf-8",
@@ -454,8 +225,6 @@ function getMimeTypeFromFilename(filename) {
     xml: "application/xml;charset=utf-8",
     md: "text/markdown;charset=utf-8",
     vtt: "text/vtt;charset=utf-8",
-
-    // 图像
     png: "image/png",
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
@@ -463,14 +232,10 @@ function getMimeTypeFromFilename(filename) {
     svg: "image/svg+xml",
     webp: "image/webp",
     ico: "image/x-icon",
-
-    // 音频/视频
     mp3: "audio/mpeg",
     mp4: "video/mp4",
     webm: "video/webm",
     wav: "audio/wav",
-
-    // 应用程序/文档
     pdf: "application/pdf",
     zip: "application/zip",
     doc: "application/msword",
@@ -479,15 +244,9 @@ function getMimeTypeFromFilename(filename) {
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   };
 
-  // 默认值
   return mimeMap[extension] || defaultType;
 }
 
-/**
- * 下载文件
- * @param {*} str
- * @param {*} filename
- */
 export function downloadBlobFile(str, filename = "kiss-file.txt") {
   const mimeType = getMimeTypeFromFilename(filename);
   const blob = new Blob([str], { type: mimeType });
@@ -505,7 +264,6 @@ export function downloadBlobFile(str, filename = "kiss-file.txt") {
   URL.revokeObjectURL(url);
 }
 
-// HTML转义
 export function escapeHTML(str) {
   const div = document.createElement("div");
   div.textContent = str;
