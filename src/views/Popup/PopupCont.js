@@ -220,7 +220,8 @@ export default function PopupCont({
     isPlainText = false,
   } = rule || {};
 
-  const displayTextStyle = textStyle === GLOBAL_KEY ? GLOBLA_RULE.textStyle : textStyle;
+  const displayTextStyle =
+    textStyle === GLOBAL_KEY ? GLOBLA_RULE.textStyle : textStyle;
 
   const tranboxSetting = setting?.tranboxSetting || {};
   const transApis = setting?.transApis || [];

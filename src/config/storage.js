@@ -16,7 +16,6 @@ export const STOKEY_RULES = `${APP_NAME}_rules_v${APP_VERSION[0]}`;
 export const STOKEY_WORDS = `${APP_NAME}_words`;
 export const STOKEY_SYNC = `${APP_NAME}_sync`;
 export const STOKEY_TRANBOX = `${APP_NAME}_tranbox`;
-export const STOKEY_SEPARATE_WINDOW = `${APP_NAME}_separate_window`;
 
 export const CACHE_NAME = `${APP_NAME}_cache`;
 export const DEFAULT_CACHE_TIMEOUT = 3600 * 24 * 7; // 缓存超时时间(7天)

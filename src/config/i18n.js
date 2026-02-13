@@ -1474,8 +1474,8 @@ export const I18N = {
     en: `Early triggering of scroll loading (0-10000px)`,
   },
   styles_setting: {
-    zh: `样式设置`,
-    en: `Style Setting`,
+    zh: `翻译结果样式`,
+    en: `Translation Result Style`,
   },
   style_name: {
     zh: `样式名称`,
@@ -1508,10 +1508,6 @@ export const I18N = {
   is_enable_enhance: {
     zh: `启用增强功能`,
     en: `Enable Enhancement Features`,
-  },
-  open_separate_window: {
-    zh: `独立窗口打开`,
-    en: `Open in Separate Window`,
   },
   comment_support: {
     zh: `好评支持`,

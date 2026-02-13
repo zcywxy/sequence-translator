@@ -36,7 +36,9 @@ class TaskPool {
         kissLog("task pool", err);
         if (task.retry < this.#maxRetry) {
           const retryDelay = this.#getRetryDelay(task.retry);
-          kissLog(`task retry ${task.retry + 1}/${this.#maxRetry}, delay: ${retryDelay}ms`);
+          kissLog(
+            `task retry ${task.retry + 1}/${this.#maxRetry}, delay: ${retryDelay}ms`
+          );
           this.#pool.unshift({ ...task, retry: task.retry + 1 });
           await new Promise((r) => setTimeout(r, retryDelay));
           continue;

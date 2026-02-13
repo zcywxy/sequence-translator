@@ -2,7 +2,6 @@ export const CMD_TOGGLE_TRANSLATE = "toggleTranslate";
 export const CMD_TOGGLE_STYLE = "toggleStyle";
 export const CMD_OPEN_OPTIONS = "openOptions";
 export const CMD_OPEN_TRANBOX = "openTranbox";
-export const CMD_OPEN_SEPARATE_WINDOW = "openSeparateWindow";
 
 export const MSG_FETCH = "kiss_fetch";
 export const MSG_GET_HTTPCACHE = "get_httpcache";
@@ -26,7 +25,6 @@ export const MSG_INJECT_CSS = "inject_css";
 export const MSG_UPDATE_CSP = "update_csp";
 export const MSG_SET_LOGLEVEL = "set_loglevel";
 export const MSG_CLEAR_CACHES = "clear_caches";
-export const MSG_OPEN_SEPARATE_WINDOW = "open_separate_window";
 export const PORT_STREAM_FETCH = "kiss_stream_fetch";
 export const MSG_UPDATE_ICON = "update_icon";
 

@@ -1,13 +1,12 @@
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useI18n } from "../../hooks/I18n";
 import Box from "@mui/material/Box";
 import { useTheme, alpha } from "@mui/material/styles";
 
-export default function Header({ openSeparateWindow, handleOpenSetting }) {
+export default function Header({ handleOpenSetting }) {
   const i18n = useI18n();
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
@@ -81,29 +80,6 @@ export default function Header({ openSeparateWindow, handleOpenSetting }) {
         </Typography>
 
         <Stack direction="row" alignItems="center" spacing={0.5}>
-          <IconButton
-            onClick={openSeparateWindow}
-            title={i18n("open_separate_window")}
-            sx={{
-              ...baseBtnStyle,
-              "&:hover": {
-                "&::before": { opacity: 1 },
-                transform: "translateY(-1px)",
-                boxShadow: isDark
-                  ? "0 4px 12px rgba(0, 212, 255, 0.2)"
-                  : "0 4px 12px rgba(32, 156, 238, 0.15)",
-                "& svg": {
-                  color: theme.palette.primary.main,
-                  transform: "scale(1.1)",
-                },
-              },
-              "&:active": {
-                transform: "translateY(0) scale(0.95)",
-              },
-            }}
-          >
-            <OpenInNewIcon fontSize="small" />
-          </IconButton>
           <IconButton
             onClick={handleOpenSetting}
             title={i18n("setting")}

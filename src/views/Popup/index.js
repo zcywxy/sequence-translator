@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
-import { sendBgMsg, sendTabMsg } from "../../libs/msg";
+import { sendTabMsg } from "../../libs/msg";
 import { browser } from "../../libs/browser";
 import Divider from "@mui/material/Divider";
 import Header from "./Header";
-import { MSG_OPEN_SEPARATE_WINDOW, MSG_TRANS_GETRULE } from "../../config";
+import { MSG_TRANS_GETRULE } from "../../config";
 import { kissLog } from "../../libs/log";
 import PopupCont from "./PopupCont";
 import { useTheme, alpha } from "@mui/material/styles";
@@ -38,11 +38,6 @@ export default function Popup() {
         kissLog("query rule", err);
       }
     })();
-  }, []);
-
-  const openSeparateWindow = useCallback(() => {
-    sendBgMsg(MSG_OPEN_SEPARATE_WINDOW);
-    window.close();
   }, []);
 
   if (isSeparate) {
@@ -94,10 +89,7 @@ export default function Popup() {
         },
       }}
     >
-      <Header
-        openSeparateWindow={openSeparateWindow}
-        handleOpenSetting={handleOpenSetting}
-      />
+      <Header handleOpenSetting={handleOpenSetting} />
       <Divider
         sx={{
           borderColor: isDark

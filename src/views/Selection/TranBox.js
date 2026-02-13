@@ -8,7 +8,6 @@ import IconButton from "@mui/material/IconButton";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import LockIcon from "@mui/icons-material/Lock";
@@ -16,12 +15,9 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { useI18n } from "../../hooks/I18n";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { isMobile } from "../../libs/mobile";
 import TranForm from "./TranForm.js";
-import { MSG_OPEN_SEPARATE_WINDOW } from "../../config/msg.js";
-import { sendBgMsg } from "../../libs/msg.js";
-import { isExt } from "../../libs/client.js";
 import { useTheme, alpha } from "@mui/material/styles";
 
 function Header({
@@ -40,10 +36,6 @@ function Header({
 
   const iconColor = theme.palette.text.secondary;
   const buttonHoverBg = theme.palette.action.hover;
-
-  const openSeparateWindow = useCallback(() => {
-    sendBgMsg(MSG_OPEN_SEPARATE_WINDOW);
-  }, []);
 
   const blurOnLeave = (e) => e.currentTarget.blur();
 
@@ -134,34 +126,6 @@ function Header({
         )}
 
         <Stack direction="row" alignItems="center" spacing={0.5}>
-          {isExt && (
-            <IconButton
-              size="small"
-              title={i18n("open_separate_window")}
-              onClick={openSeparateWindow}
-              onMouseLeave={blurOnLeave}
-              sx={{
-                ...baseBtnStyle,
-                "&:hover": {
-                  "&::before": { opacity: 1 },
-                  transform: "translateY(-1px)",
-                  boxShadow: isDark
-                    ? "0 4px 12px rgba(0, 212, 255, 0.2)"
-                    : "0 4px 12px rgba(32, 156, 238, 0.15)",
-                  "& svg": {
-                    color: theme.palette.primary.main,
-                    transform: "scale(1.1)",
-                  },
-                },
-                "&:active": {
-                  transform: "translateY(0) scale(0.95)",
-                },
-              }}
-            >
-              <OpenInNewIcon sx={{ width: 16, height: 16 }} />
-            </IconButton>
-          )}
-
           <IconButton
             size="small"
             title={i18n("btn_tip_click_away")}
