@@ -15,9 +15,6 @@ import Stack from "@mui/material/Stack";
 import { adaptScript } from "../../libs/gm";
 import Alert from "@mui/material/Alert";
 import Apis from "./Apis";
-import InputSetting from "./InputSetting";
-import Tranbox from "./Tranbox";
-import FavWords from "./FavWords";
 import Loading from "../../hooks/Loading";
 import StylesSetting from "./StylesSetting";
 
@@ -113,10 +110,7 @@ export default function Options() {
                   <Route index element={<Setting />} />
                   <Route path="rules" element={<Rules />} />
                   <Route path="styles" element={<StylesSetting />} />
-                  <Route path="input" element={<InputSetting />} />
-                  <Route path="tranbox" element={<Tranbox />} />
                   <Route path="apis" element={<Apis />} />
-                  <Route path="words" element={<FavWords />} />
                 </Route>
               </Routes>
             </HashRouter>

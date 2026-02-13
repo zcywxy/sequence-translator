@@ -46,14 +46,13 @@ export default class TranslatorManager {
   _inputTranslator;
   _popupManager;
 
-  constructor({ setting, rule, favWords, isIframe, isUserscript }) {
+  constructor({ setting, rule, isIframe, isUserscript }) {
     this.#isIframe = isIframe;
     this.#isUserscript = isUserscript;
 
     this._translator = new Translator({
       rule,
       setting,
-      favWords,
       isUserscript,
       isIframe,
     });

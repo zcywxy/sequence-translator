@@ -9,9 +9,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import { useI18n } from "../../hooks/I18n";
 import ApiIcon from "@mui/icons-material/Api";
-import InputIcon from "@mui/icons-material/Input";
-import SelectAllIcon from "@mui/icons-material/SelectAll";
-import EventNoteIcon from "@mui/icons-material/EventNote";
 import FormatColorText from "@mui/icons-material/FormatColorText";
 
 function LinkItem({ label, url, icon }) {
@@ -50,24 +47,6 @@ export default function Navigator(props) {
       label: i18n("styles_setting"),
       url: "/styles",
       icon: <FormatColorText />,
-    },
-    {
-      id: "input_translate",
-      label: i18n("input_translate"),
-      url: "/input",
-      icon: <InputIcon />,
-    },
-    {
-      id: "selection_translate",
-      label: i18n("selection_translate"),
-      url: "/tranbox",
-      icon: <SelectAllIcon />,
-    },
-    {
-      id: "words",
-      label: i18n("favorite_words"),
-      url: "/words",
-      icon: <EventNoteIcon />,
     },
   ];
   return (

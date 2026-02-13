@@ -3,7 +3,6 @@ import {
   STOKEY_SETTING_OLD,
   STOKEY_RULES,
   STOKEY_RULES_OLD,
-  STOKEY_WORDS,
   STOKEY_TRANBOX,
   STOKEY_MSAUTH,
   STOKEY_BDAUTH,
@@ -141,13 +140,6 @@ export const getRulesOld = () => getObj(STOKEY_RULES_OLD);
 export const getRulesWithDefault = async () =>
   (await getRules()) || DEFAULT_RULES;
 export const setRules = (val) => setObj(STOKEY_RULES, val);
-
-/**
- * 词汇列表
- */
-export const getWords = () => getObj(STOKEY_WORDS);
-export const getWordsWithDefault = async () => (await getWords()) || {};
-export const setWords = (val) => setObj(STOKEY_WORDS, val);
 
 /**
  * tranbox位置大小

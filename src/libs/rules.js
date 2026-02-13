@@ -6,7 +6,6 @@ import {
   DEFAULT_RULE,
   GLOBLA_RULE,
   OPT_SPLIT_PARAGRAPH_ALL,
-  OPT_HIGHLIGHT_WORDS_ALL,
 } from "../config";
 import { getRulesWithDefault, setRules } from "./storage";
 import { kissLog } from "./log";
@@ -101,7 +100,6 @@ const mergeRules = (baseRule, overrideRule) => {
     "terms",
     "aiTerms",
     "termsStyle",
-    "highlightStyle",
     "textExtStyle",
     "selectStyle",
     "parentStyle",
@@ -130,7 +128,6 @@ const mergeRules = (baseRule, overrideRule) => {
     "transTag",
     "transTitle",
     "splitParagraph",
-    "highlightWords",
     "textStyle",
   ].forEach((key) => {
     if (overrideRule[key] && overrideRule[key] !== GLOBAL_KEY) {
@@ -221,7 +218,6 @@ export const checkRules = (rules) => {
         terms,
         aiTerms,
         termsStyle,
-        highlightStyle,
         textExtStyle,
         selectStyle,
         parentStyle,
@@ -244,7 +240,6 @@ export const checkRules = (rules) => {
         // transRemoveHook,
         splitParagraph,
         splitLength,
-        highlightWords,
       }) => ({
         pattern: pattern.trim(),
         selector: type(selector) === "string" ? selector : "",
@@ -254,7 +249,6 @@ export const checkRules = (rules) => {
         terms: type(terms) === "string" ? terms : "",
         aiTerms: type(aiTerms) === "string" ? aiTerms : "",
         termsStyle: type(termsStyle) === "string" ? termsStyle : "",
-        highlightStyle: type(highlightStyle) === "string" ? highlightStyle : "",
         textExtStyle: type(textExtStyle) === "string" ? textExtStyle : "",
         selectStyle: type(selectStyle) === "string" ? selectStyle : "",
         parentStyle: type(parentStyle) === "string" ? parentStyle : "",
@@ -288,10 +282,6 @@ export const checkRules = (rules) => {
           splitParagraph
         ),
         splitLength: Number.isInteger(splitLength) ? splitLength : 0,
-        highlightWords: matchValue(
-          [GLOBAL_KEY, ...OPT_HIGHLIGHT_WORDS_ALL],
-          highlightWords
-        ),
       })
     );
 

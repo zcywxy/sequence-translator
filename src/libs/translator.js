@@ -7,8 +7,6 @@ import {
   // DEFAULT_MOUSEHOVER_KEY,
   OPT_STYLE_NONE,
   DEFAULT_API_SETTING,
-  OPT_HIGHLIGHT_WORDS_BEFORETRANS,
-  OPT_HIGHLIGHT_WORDS_AFTERTRANS,
   OPT_SPLIT_PARAGRAPH_PUNCTUATION,
   OPT_SPLIT_PARAGRAPH_DISABLE,
   OPT_SPLIT_PARAGRAPH_TEXTLENGTH,
@@ -167,7 +165,6 @@ export class Translator {
     inner: `${APP_LCNAME}-inner`,
     term: `${APP_LCNAME}-term`,
     br: `${APP_LCNAME}-br`,
-    highlight: `${APP_LCNAME}-highlight`,
   };
 
   // 内置跳过翻译文本
@@ -303,7 +300,6 @@ export class Translator {
   #textClass = {}; // 译文样式class
   #textSheet = ""; // 译文样式字典
   #apisMap = new Map(); // 用于接口快速查找
-  #favWords = []; // 收藏词汇
 
   #observedNodes = new WeakSet(); // 存储所有被识别出的、可翻译的 DOM 节点单元
   #translationNodes = new WeakMap(); // 存储所有插入到页面的译文节点
@@ -367,10 +363,9 @@ export class Translator {
     };
   }
 
-  constructor({ rule = {}, setting = {}, favWords = [] }) {
+  constructor({ rule = {}, setting = {} }) {
     this.#setting = { ...Translator.DEFAULT_OPTIONS, ...setting };
     this.#rule = { ...Translator.DEFAULT_RULE, ...rule, isPlainText: false };
-    this.#favWords = favWords;
     this.#apisMap = new Map(
       this.#setting.transApis.map((api) => [api.apiSlug, api])
     );
@@ -770,10 +765,6 @@ export class Translator {
     // todo: DocumentFragment 无法被 this.#io.observe
     if (!Translator.isElement(node)) return;
 
-    if (this.#rule.highlightWords === OPT_HIGHLIGHT_WORDS_BEFORETRANS) {
-      this.#highlightWordsDeeply(node);
-    }
-
     if (
       !this.#observedNodes.has(node) &&
       this.#enabled &&
@@ -946,76 +937,6 @@ export class Translator {
     this.#isTranslateProcessing = false;
   }
 
-  // 高亮词汇
-  #highlightTextNode(textNode, wordRegex) {
-    if (textNode.parentNode?.nodeName.toLowerCase() === "b") {
-      return;
-    }
-
-    if (!wordRegex.test(textNode.textContent)) {
-      return;
-    }
-
-    wordRegex.lastIndex = 0;
-    const fragments = textNode.textContent.split(wordRegex);
-    const newNodes = [];
-
-    fragments.forEach((fragment, i) => {
-      if (!fragment) return;
-
-      if (i % 2 === 1) {
-        // 奇数索引是匹配到的关键词
-        const bTag = document.createElement("b");
-        bTag.className = Translator.KISS_CLASS.highlight;
-        bTag.style.cssText = this.#rule.highlightStyle || "";
-        bTag.textContent = fragment;
-        this.#skipMoNodes.add(bTag);
-        newNodes.push(bTag);
-      } else {
-        // 偶数索引是普通文本
-        const newTextNode = document.createTextNode(fragment);
-        this.#skipMoNodes.add(newTextNode);
-        newNodes.push(newTextNode);
-      }
-    });
-
-    if (newNodes.length > 0) {
-      textNode.replaceWith(...newNodes);
-    }
-  }
-
-  // 高亮词汇
-  #highlightWordsDeeply(parentNode) {
-    if (!parentNode || this.#favWords.length === 0) {
-      return;
-    }
-
-    const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const escapedWords = this.#favWords.map(escapeRegex);
-    const wordRegex = new RegExp(`\\b(${escapedWords.join("|")})\\b`, "gi");
-
-    if (parentNode.nodeType === Node.ELEMENT_NODE) {
-      const walker = document.createTreeWalker(
-        parentNode,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-      );
-
-      const nodesToProcess = [];
-      let node;
-      while ((node = walker.nextNode())) {
-        nodesToProcess.push(node);
-      }
-
-      nodesToProcess.forEach((textNode) => {
-        this.#highlightTextNode(textNode, wordRegex);
-      });
-    } else if (parentNode.nodeType === Node.TEXT_NODE) {
-      this.#highlightTextNode(parentNode, wordRegex);
-    }
-  }
-
   // 切分文本段落
   #splitTextNodesBySentence(parentNode, splitParagraph, splitLength) {
     const sentenceEndRegexForSplit = /[。！？]+|[.?!]+(?=\s+|$)/g;
@@ -1085,22 +1006,6 @@ export class Translator {
         node.after(br);
       }
     });
-  }
-
-  // 清除高亮
-  #removeHighlights(parentNode) {
-    if (!parentNode) return;
-
-    const highlightedElements = parentNode.querySelectorAll(
-      `.${Translator.KISS_CLASS.highlight}`
-    );
-
-    highlightedElements.forEach((element) => {
-      const textNode = document.createTextNode(element.textContent);
-      element.replaceWith(textNode);
-    });
-
-    parentNode.normalize();
   }
 
   // 移除br
@@ -1191,7 +1096,6 @@ export class Translator {
       // detectRemote,
       toLang,
       // skipLangs = [],
-      highlightWords,
     } = this.#rule;
     const {
       newlineLength,
@@ -1267,11 +1171,6 @@ export class Translator {
       }
       if (grandStyle && parentNode && parentNode.parentElement) {
         parentNode.parentElement.style.cssText += grandStyle;
-      }
-
-      // 高亮词汇
-      if (highlightWords === OPT_HIGHLIGHT_WORDS_AFTERTRANS) {
-        nodes.forEach((node) => this.#highlightWordsDeeply(node));
       }
 
       // 翻译完成钩子函数
@@ -1498,10 +1397,6 @@ export class Translator {
     this.#translationNodes.delete(el);
     el.remove();
 
-    // todo: 可能不应深度清除
-    if (this.#rule.highlightWords === OPT_HIGHLIGHT_WORDS_AFTERTRANS) {
-      this.#removeHighlights(parentElement);
-    }
     this.#removeBrTags(parentElement);
   }
 

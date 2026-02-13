@@ -1,5 +1,5 @@
-import { OPT_HIGHLIGHT_WORDS_DISABLE, APP_NAME } from "./config";
-import { getSettingWithDefault, getWordsWithDefault } from "./libs/storage";
+import { APP_NAME } from "./config";
+import { getSettingWithDefault } from "./libs/storage";
 import { isIframe } from "./libs/iframe";
 import { genEventName } from "./libs/utils";
 import { handlePing, injectScript } from "./libs/gm";
@@ -92,21 +92,6 @@ function showErr(message) {
   setTimeout(removeBanner, 10000);
 }
 
-async function getFavWords(rule) {
-  if (
-    rule.highlightWords &&
-    rule.highlightWords !== OPT_HIGHLIGHT_WORDS_DISABLE
-  ) {
-    try {
-      return Object.keys(await getWordsWithDefault());
-    } catch (err) {
-      logger.info("get fav words", err);
-    }
-  }
-
-  return [];
-}
-
 /**
  * 入口函数
  */
@@ -160,11 +145,9 @@ export async function run(isUserscript = false) {
 
     // 翻译网页
     const rule = await matchRule(href);
-    const favWords = await getFavWords(rule);
     const translatorManager = new TranslatorManager({
       setting,
       rule,
-      favWords,
       isIframe,
       isUserscript,
     });

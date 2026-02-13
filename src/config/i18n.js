@@ -222,6 +222,10 @@ export const I18N = {
     zh: `界面语言`,
     en: `Interface Language`,
   },
+  ui_lang_help: {
+    zh: `设置插件配置界面的显示语言`,
+    en: `Set the display language of the plugin configuration interface`,
+  },
   fetch_limit: {
     zh: `最大并发请求数量 (1-100)`,
     en: `Maximum Number Of Concurrent Requests (1-100)`,
@@ -250,9 +254,17 @@ export const I18N = {
     zh: `翻译间隔时间 (1-2000ms)`,
     en: `Translation Interval (1-2000ms)`,
   },
+  translate_interval_help: {
+    zh: `两次翻译请求之间的间隔时间，避免请求过于频繁`,
+    en: `Interval between two translation requests to avoid too frequent requests`,
+  },
   http_timeout: {
     zh: `请求超时时间 (100-6000000ms)`,
     en: `Request Timeout Time (100-6000000ms)`,
+  },
+  http_timeout_help: {
+    zh: `翻译请求的超时时间，超过该时间将取消请求`,
+    en: `Timeout for translation requests, requests will be cancelled after this time`,
   },
   custom_header: {
     zh: `自定义Header参数`,
@@ -274,21 +286,41 @@ export const I18N = {
     zh: `最小翻译字符数 (1-100)`,
     en: `Minimum number Of Translated Characters (1-100)`,
   },
+  min_translate_length_help: {
+    zh: `少于该字符数的文本将不会被翻译`,
+    en: `Text with fewer characters than this will not be translated`,
+  },
   max_translate_length: {
     zh: `最大翻译字符数 (100-100000)`,
     en: `Maximum number Of Translated Characters (100-100000)`,
+  },
+  max_translate_length_help: {
+    zh: `超过该字符数的文本将被截断，不会翻译`,
+    en: `Text exceeding this number of characters will be truncated and not translated`,
   },
   num_of_newline_characters: {
     zh: `换行字符数 (1-1000)`,
     en: `Number of Newline Characters (1-1000)`,
   },
+  num_of_newline_characters_help: {
+    zh: `当原文超过该字符数时，将在原文和译文之间添加换行`,
+    en: `When the original text exceeds this number of characters, a line break will be added between the original and translated text`,
+  },
   translate_service: {
     zh: `翻译服务`,
     en: `Translate Service`,
   },
+  translate_service_help: {
+    zh: `选择用于翻译的API服务，需要在API配置中设置相应的密钥`,
+    en: `Select the API service for translation, need to set the corresponding key in API configuration`,
+  },
   translate_service_multiple: {
     zh: `翻译服务 (支持多选)`,
     en: `Translation service (multiple supported)`,
+  },
+  translate_service_multiple_help: {
+    zh: `选择多个翻译服务，翻译结果将同时显示`,
+    en: `Select multiple translation services, translation results will be displayed simultaneously`,
   },
   translate_timing: {
     zh: `翻译时机`,
@@ -322,9 +354,17 @@ export const I18N = {
     zh: `原文语言`,
     en: `Source Language`,
   },
+  from_lang_help: {
+    zh: `选择原文的语言，选择"自动检测"将自动识别语言`,
+    en: `Select the source language, choose "Auto detect" to automatically identify the language`,
+  },
   to_lang: {
     zh: `目标语言`,
     en: `Target Language`,
+  },
+  to_lang_help: {
+    zh: `选择翻译的目标语言`,
+    en: `Select the target language for translation`,
   },
   to_lang2: {
     zh: `第二目标语言`,
@@ -425,10 +465,6 @@ export const I18N = {
   about_api_proxy: {
     zh: `查看自建一个翻译接口代理`,
     en: `Check out the self-built translation interface proxy`,
-  },
-  setting_helper: {
-    zh: `新旧配置并不兼容，导出的旧版配置，勿再次导入。`,
-    en: `The old and new configurations are not compatible. Do not import the exported old configuration again.`,
   },
   style_none: {
     zh: `无`,
@@ -589,10 +625,6 @@ export const I18N = {
   terms_style: {
     zh: `专业术语样式`,
     en: `Terms Style`,
-  },
-  highlight_style: {
-    zh: `词汇高亮样式`,
-    en: `Fav Words highlight style`,
   },
   selector_style_helper: {
     zh: `开启翻译时注入。`,
@@ -814,13 +846,25 @@ export const I18N = {
     zh: `隐藏翻译按钮`,
     en: `Hide Translate Button`,
   },
+  hide_tran_button_help: {
+    zh: `隐藏划词翻译时出现的翻译按钮，隐藏后可通过快捷键触发翻译`,
+    en: `Hide the translate button when selecting text, can still trigger translation via shortcut after hiding`,
+  },
   hide_click_away: {
     zh: `点击外部关闭弹窗`,
     en: `Click outside to close the pop-up window`,
   },
+  hide_click_away_help: {
+    zh: `点击翻译弹窗外部区域时自动关闭弹窗`,
+    en: `Automatically close the popup when clicking outside the translation popup`,
+  },
   use_simple_style: {
     zh: `使用简洁界面`,
     en: `Use a simple interface`,
+  },
+  use_simple_style_help: {
+    zh: `使用简洁的翻译结果界面，减少视觉干扰`,
+    en: `Use a simple translation result interface to reduce visual distraction`,
   },
   show: {
     zh: `显示`,
@@ -850,6 +894,10 @@ export const I18N = {
     zh: `启用输入框翻译`,
     en: `Input Box Translation`,
   },
+  use_input_box_translation_help: {
+    zh: `在输入框中输入文本时自动翻译，适用于搜索框、评论框等`,
+    en: `Automatically translate text when typing in input boxes, suitable for search boxes, comment boxes, etc.`,
+  },
   input_selector: {
     zh: `输入框选择器`,
     en: `Input Selector`,
@@ -863,23 +911,31 @@ export const I18N = {
     en: `Trigger Translation Shortcut Keys`,
   },
   trigger_trans_shortcut_help: {
-    zh: `默认为单击“AltLeft+KeyI”`,
+    zh: `默认为单击"AltLeft+KeyI"`,
     en: `Default is "AltLeft+KeyI"`,
   },
   shortcut_press_count: {
     zh: `快捷键连击次数`,
     en: `Shortcut Press Number`,
   },
+  shortcut_press_count_help: {
+    zh: `需要连续按几次快捷键才触发翻译`,
+    en: `How many times to press the shortcut key continuously to trigger translation`,
+  },
   combo_timeout: {
     zh: `连击超时时间 (10-1000ms)`,
     en: `Combo Timeout (10-1000ms)`,
+  },
+  combo_timeout_help: {
+    zh: `两次按键之间的最大间隔时间，超过该时间将重新计数`,
+    en: `Maximum interval between two key presses, will reset count if exceeded`,
   },
   input_trans_start_sign: {
     zh: `翻译起始标识`,
     en: `Translation Start Sign`,
   },
   input_trans_start_sign_help: {
-    zh: `标识后面可以加目标语言代码，如： “/en 你好”、“/zh hello”`,
+    zh: `标识后面可以加目标语言代码，如： "/en 你好"、"/zh hello"`,
     en: `The target language code can be added after the sign, such as: "/en 你好", "/zh hello"`,
   },
   detect_lang_remote: {
@@ -910,6 +966,10 @@ export const I18N = {
     zh: `启用划词翻译`,
     en: `Use Selection Translate`,
   },
+  toggle_selection_translate_help: {
+    zh: `选中网页上的文字后显示翻译按钮和翻译结果`,
+    en: `Show translate button and translation result after selecting text on webpage`,
+  },
   trigger_tranbox_shortcut: {
     zh: `显示翻译框/翻译选中文字快捷键`,
     en: `Open Translate Popup/Translate Selected Shortcut`,
@@ -918,17 +978,33 @@ export const I18N = {
     zh: `翻译按钮偏移X（±200）`,
     en: `Translate Button Offset X (±200)`,
   },
+  tranbtn_offset_x_help: {
+    zh: `翻译按钮相对于选中文本的水平偏移量`,
+    en: `Horizontal offset of the translate button relative to the selected text`,
+  },
   tranbtn_offset_y: {
     zh: `翻译按钮偏移Y（±200）`,
     en: `Translate Button Offset Y (±200)`,
+  },
+  tranbtn_offset_y_help: {
+    zh: `翻译按钮相对于选中文本的垂直偏移量`,
+    en: `Vertical offset of the translate button relative to the selected text`,
   },
   tranbox_offset_x: {
     zh: `翻译框偏移X（±200）`,
     en: `Translate Box Offset X (±200)`,
   },
+  tranbox_offset_x_help: {
+    zh: `翻译框相对于选中文本的水平偏移量`,
+    en: `Horizontal offset of the translation box relative to the selected text`,
+  },
   tranbox_offset_y: {
     zh: `翻译框偏移Y（±200）`,
     en: `Translate Box Offset Y (±200)`,
+  },
+  tranbox_offset_y_help: {
+    zh: `翻译框相对于选中文本的垂直偏移量`,
+    en: `Vertical offset of the translation box relative to the selected text`,
   },
   translated_text: {
     zh: `译文`,
@@ -938,10 +1014,6 @@ export const I18N = {
     zh: `原文`,
     en: `Original Text`,
   },
-  favorite_words: {
-    zh: `收藏词汇`,
-    en: `Favorite Words`,
-  },
   touch_setting: {
     zh: `触屏设置`,
     en: `Touch Setting`,
@@ -949,6 +1021,10 @@ export const I18N = {
   touch_translate_shortcut: {
     zh: `触屏翻译快捷方式 (支持多选)`,
     en: `Touch Translate Shortcut (multiple supported)`,
+  },
+  touch_translate_shortcut_help: {
+    zh: `在触屏设备上触发翻译的手势操作`,
+    en: `Gesture operations to trigger translation on touch devices`,
   },
   touch_tap_0: {
     zh: `禁用`,
@@ -982,6 +1058,10 @@ export const I18N = {
     zh: `禁用翻译名单`,
     en: `Translate Blacklist`,
   },
+  translate_blacklist_help: {
+    zh: `匹配这些网址的页面将不会进行翻译，每行一个匹配规则`,
+    en: `Pages matching these URLs will not be translated, one rule per line`,
+  },
   disabled_orilist: {
     zh: `禁用Origin名单`,
     en: `Disabled Origin List`,
@@ -1005,6 +1085,10 @@ export const I18N = {
   context_menus: {
     zh: `右键菜单`,
     en: `Context Menus`,
+  },
+  context_menus_help: {
+    zh: `在网页上右键时显示的翻译菜单选项`,
+    en: `Translation menu options displayed when right-clicking on a webpage`,
   },
   hide_context_menus: {
     zh: `隐藏右键菜单`,
@@ -1058,6 +1142,10 @@ export const I18N = {
     zh: `触发方式`,
     en: `Trigger Mode`,
   },
+  trigger_mode_help: {
+    zh: `选择页面翻译的触发方式：滚动加载或页面打开时立即翻译`,
+    en: `Select the trigger mode for page translation: scroll loading or translate immediately when page opens`,
+  },
   trigger_click: {
     zh: `点击触发`,
     en: `Click Trigger`,
@@ -1098,9 +1186,17 @@ export const I18N = {
     zh: `翻译框跟随选中文本`,
     en: `Transbox Follow Selection`,
   },
+  follow_selection_help: {
+    zh: `翻译框将跟随选中的文本位置移动`,
+    en: `The translation box will follow the position of the selected text`,
+  },
   tranbox_auto_height: {
     zh: `翻译框自适应高度`,
     en: `Translation box adaptive height`,
+  },
+  tranbox_auto_height_help: {
+    zh: `根据翻译结果内容自动调整翻译框高度`,
+    en: `Automatically adjust the translation box height based on the translation content`,
   },
   translate_start_hook: {
     zh: `翻译开始钩子函数`,
@@ -1285,13 +1381,13 @@ export const I18N = {
     zh: `是否预初始化`,
     en: `Whether to pre-initialize`,
   },
+  if_pre_init_help: {
+    zh: `启用后将在页面加载时预初始化翻译器，可加快首次翻译速度`,
+    en: `When enabled, the translator will be pre-initialized on page load, speeding up the first translation`,
+  },
   export_old: {
     zh: `导出旧版`,
     en: `Export old version`,
-  },
-  favorite_words_helper: {
-    zh: `导入词汇请使用txt文件，每一行一个单词。`,
-    en: `To import vocabulary, please use a txt file with one word per line.`,
   },
   btn_tip_click_away: {
     zh: `失焦隐藏/显示`,
@@ -1316,6 +1412,10 @@ export const I18N = {
   detected_lang: {
     zh: `语言检测`,
     en: `Language detection`,
+  },
+  detected_lang_help: {
+    zh: `选择用于检测文本语言的服务，禁用则不进行语言检测`,
+    en: `Select the service used to detect text language, disable for no language detection`,
   },
   detected_result: {
     zh: `检测结果`,
@@ -1429,6 +1529,10 @@ export const I18N = {
     zh: `日志级别`,
     en: `Log Level`,
   },
+  log_level_help: {
+    zh: `控制浏览器控制台输出的日志详细程度，调试时可设为Debug`,
+    en: `Control the verbosity of console logs, set to Debug for debugging`,
+  },
   goto_custom_api_example: {
     zh: `点击查看【自定义接口示例】`,
     en: `Click to view [Custom Interface Example]`,
@@ -1440,10 +1544,6 @@ export const I18N = {
   split_length: {
     zh: `切分长度 (0-10000)`,
     en: `Segmentation length(0-10000)`,
-  },
-  highlight_words: {
-    zh: `高亮收藏词汇`,
-    en: `Highlight favorite words`,
   },
   split_disable: {
     zh: `禁用`,
@@ -1457,21 +1557,13 @@ export const I18N = {
     zh: `按照句子切分`,
     en: `Split by sentence`,
   },
-  highlight_disable: {
-    zh: `禁用`,
-    en: `Disable`,
-  },
-  highlight_beforetrans: {
-    zh: `翻译前高亮`,
-    en: `Highlight before translation`,
-  },
-  highlight_aftertrans: {
-    zh: `翻译后高亮`,
-    en: `Highlight after translation`,
-  },
   pagescroll_root_margin: {
     zh: `滚动加载提前触发 (0-10000px)`,
     en: `Early triggering of scroll loading (0-10000px)`,
+  },
+  pagescroll_root_margin_help: {
+    zh: `当元素距离视口该距离时开始翻译，值越大越早触发`,
+    en: `Start translating when elements are this distance from the viewport, larger values trigger earlier`,
   },
   styles_setting: {
     zh: `翻译结果样式`,
