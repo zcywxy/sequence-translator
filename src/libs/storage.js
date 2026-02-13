@@ -98,31 +98,36 @@ export const getSettingWithDefault = async () => {
     ...DEFAULT_SETTING,
     ...savedSetting,
   };
-  
+
   if (savedSetting.transApis && Array.isArray(savedSetting.transApis)) {
     const defaultApiMap = new Map(
       DEFAULT_API_LIST.map((api) => [api.apiSlug, api])
     );
     const mergedApis = savedSetting.transApis.map((api) => {
-      const defaultApi = defaultApiMap.get(api.apiSlug) || 
+      const defaultApi =
+        defaultApiMap.get(api.apiSlug) ||
         DEFAULT_API_LIST.find((da) => da.apiType === api.apiType);
       if (defaultApi) {
-        return { ...defaultApi, ...api, apiType: api.apiType || defaultApi.apiType };
+        return {
+          ...defaultApi,
+          ...api,
+          apiType: api.apiType || defaultApi.apiType,
+        };
       }
       return api;
     });
-    
+
     for (const defaultApi of DEFAULT_API_LIST) {
       if (!mergedApis.find((api) => api.apiSlug === defaultApi.apiSlug)) {
         mergedApis.push(defaultApi);
       }
     }
-    
+
     mergedSetting.transApis = mergedApis;
   } else {
     mergedSetting.transApis = DEFAULT_API_LIST;
   }
-  
+
   return mergedSetting;
 };
 export const setSetting = (val) => setObj(STOKEY_SETTING, val);

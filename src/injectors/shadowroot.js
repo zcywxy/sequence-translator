@@ -3,7 +3,10 @@ export const shadowRootInjector = () => {
     const orig = Element.prototype.attachShadow;
     Element.prototype.attachShadow = function (...args) {
       const root = orig.apply(this, args);
-      window.postMessage({ type: "sequence-translator_SHADOW_ROOT_CREATED" }, "*");
+      window.postMessage(
+        { type: "sequence-translator_SHADOW_ROOT_CREATED" },
+        "*"
+      );
       return root;
     };
   } catch (err) {

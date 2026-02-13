@@ -1,6 +1,6 @@
 {
   "name": "sequence-translator",
-  "description": "A minimalist bilingual translation Extension & Greasemonkey Script",
+  "description": "A minimalist bilingual translation browser extension with modern UI design",
   "version": "0.0.1",
   "author": "Gabe<yugang2002@gmail.com>",
   "private": true,

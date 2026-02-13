@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import Slection from "../views/Selection";
-import { 
-  DEFAULT_TRANBOX_SETTING, 
+import {
+  DEFAULT_TRANBOX_SETTING,
   APP_CONSTS,
   DEFAULT_API_LIST,
 } from "../config";
@@ -46,12 +46,12 @@ export class TransboxManager {
         container: this.#shadowContainer,
       });
 
-      const { 
-        tranboxSetting = DEFAULT_TRANBOX_SETTING, 
-        transApis = DEFAULT_API_LIST, 
-        contextMenuType = 1, 
-        uiLang = "en", 
-        langDetector = "-" 
+      const {
+        tranboxSetting = DEFAULT_TRANBOX_SETTING,
+        transApis = DEFAULT_API_LIST,
+        contextMenuType = 1,
+        uiLang = "en",
+        langDetector = "-",
       } = this.#props;
 
       this.#reactRoot = ReactDOM.createRoot(shadowRootElement);

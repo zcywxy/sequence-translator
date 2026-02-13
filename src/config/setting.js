@@ -1,8 +1,5 @@
 import { LogLevel } from "../libs/log";
-import {
-  DEFAULT_HTTP_TIMEOUT,
-  DEFAULT_API_LIST,
-} from "./api";
+import { DEFAULT_HTTP_TIMEOUT, DEFAULT_API_LIST } from "./api";
 import { DEFAULT_CUSTOM_STYLES } from "./styles";
 
 // 默认快捷键

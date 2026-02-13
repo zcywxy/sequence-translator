@@ -928,9 +928,9 @@ export class Translator {
       if (!task) break;
 
       const { nodes, hostNode, deLang } = task;
-      
+
       // 检查节点是否仍然有效
-      if (!nodes.every(n => n.isConnected) || !hostNode.isConnected) {
+      if (!nodes.every((n) => n.isConnected) || !hostNode.isConnected) {
         continue;
       }
 

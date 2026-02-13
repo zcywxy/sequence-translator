@@ -110,15 +110,15 @@ function Pointer({
 
   const touchProps = isMobile
     ? {
-      onTouchStart: handlePointerDown,
-      onTouchMove: handlePointerMove,
-      onTouchEnd: handlePointerUp,
-    }
+        onTouchStart: handlePointerDown,
+        onTouchMove: handlePointerMove,
+        onTouchEnd: handlePointerUp,
+      }
     : {
-      onPointerDown: handlePointerDown,
-      onPointerMove: handlePointerMove,
-      onPointerUp: handlePointerUp,
-    };
+        onPointerDown: handlePointerDown,
+        onPointerMove: handlePointerMove,
+        onPointerUp: handlePointerUp,
+      };
 
   return (
     <div {...props} {...touchProps}>
@@ -156,7 +156,7 @@ export default function DraggableResizable({
   const lineWidth = 4;
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
-  
+
   const glowShadow = isDark
     ? `
         0 0 1px rgba(0, 212, 255, 0.8),
@@ -169,11 +169,11 @@ export default function DraggableResizable({
         0 0 4px rgba(32, 156, 238, 0.2),
         0 4px 20px rgba(0, 0, 0, 0.15)
       `;
-  
+
   const gradientBorder = isDark
     ? "linear-gradient(135deg, #00d4ff 0%, #209CEE 25%, #00d4ff 50%, #209CEE 75%, #00d4ff 100%)"
     : "linear-gradient(135deg, #209CEE 0%, #00d4ff 25%, #209CEE 50%, #00d4ff 75%, #209CEE 100%)";
-    
+
   const opts = {
     size,
     setSize,
@@ -255,9 +255,11 @@ export default function DraggableResizable({
             position: relative;
             border-radius: 14px;
             overflow: hidden;
-            background: ${isDark 
-              ? "linear-gradient(180deg, rgba(22, 33, 62, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%)" 
-              : `linear-gradient(180deg, ${theme.palette.background.paper} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`};
+            background: ${
+              isDark
+                ? "linear-gradient(180deg, rgba(22, 33, 62, 0.98) 0%, rgba(26, 26, 46, 0.98) 100%)"
+                : `linear-gradient(180deg, ${theme.palette.background.paper} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`
+            };
             box-shadow: ${glowShadow};
           }
           .KT-draggable-body::before {
@@ -305,9 +307,7 @@ export default function DraggableResizable({
         }}
         {...opts}
       />
-      <Box
-        className="KT-draggable-body"
-      >
+      <Box className="KT-draggable-body">
         <div className="KT-draggable-glow" />
         <div className="KT-draggable-border" />
         <Pointer
@@ -333,8 +333,14 @@ export default function DraggableResizable({
                   overflow: "hidden auto",
                 };
 
-            const scrollbarTrackColor = theme.palette.mode === "dark" ? "#1f1f23" : theme.palette.background.paper;
-            const scrollbarThumbColor = theme.palette.mode === "dark" ? alpha(theme.palette.text.primary, 0.28) : alpha(theme.palette.text.primary, 0.24);
+            const scrollbarTrackColor =
+              theme.palette.mode === "dark"
+                ? "#1f1f23"
+                : theme.palette.background.paper;
+            const scrollbarThumbColor =
+              theme.palette.mode === "dark"
+                ? alpha(theme.palette.text.primary, 0.28)
+                : alpha(theme.palette.text.primary, 0.24);
 
             return {
               ...containerStyle,

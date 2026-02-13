@@ -12,10 +12,8 @@
 
 - Google / Microsoft 翻译
 - 腾讯翻译 / 火山引擎
-- OpenAI / Gemini / Claude / Ollama / DeepSeek / OpenRouter
 - DeepL / DeepLX / 牛津翻译
-- AzureAI / CloudflareAI
-- Chrome 浏览器内置 AI 翻译
+- AI 翻译：Ollama / OpenAI
 
 ### 翻译场景覆盖
 
@@ -23,7 +21,6 @@
 - **划词翻译** - 选中文字后点击悬浮按钮即可翻译，支持多翻译服务对比
 - **输入框翻译** - 通过快捷键快速翻译输入框内容
 - **鼠标悬停翻译** - 悬停在段落上即可查看翻译结果
-- **YouTube 字幕翻译** - 支持视频字幕实时翻译与双语显示
 
 ### 翻译效果定制
 

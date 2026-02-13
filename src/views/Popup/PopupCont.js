@@ -222,38 +222,41 @@ export default function PopupCont({
   const transApis = setting?.transApis || [];
   const langDetector = setting?.langDetector || "-";
 
-  const textFieldSx = useMemo(() => ({
-    "& .MuiOutlinedInput-root": {
-      transition: "all 0.25s ease",
-      borderRadius: "10px",
-      background: isDark
-        ? "linear-gradient(135deg, rgba(0, 212, 255, 0.02) 0%, rgba(32, 156, 238, 0.01) 100%)"
-        : "linear-gradient(135deg, rgba(32, 156, 238, 0.01) 0%, rgba(0, 212, 255, 0.005) 100%)",
-      "&:hover": {
-        boxShadow: isDark
-          ? "0 0 0 1px rgba(0, 212, 255, 0.15)"
-          : "0 0 0 1px rgba(32, 156, 238, 0.1)",
+  const textFieldSx = useMemo(
+    () => ({
+      "& .MuiOutlinedInput-root": {
+        transition: "all 0.25s ease",
+        borderRadius: "10px",
+        background: isDark
+          ? "linear-gradient(135deg, rgba(0, 212, 255, 0.02) 0%, rgba(32, 156, 238, 0.01) 100%)"
+          : "linear-gradient(135deg, rgba(32, 156, 238, 0.01) 0%, rgba(0, 212, 255, 0.005) 100%)",
+        "&:hover": {
+          boxShadow: isDark
+            ? "0 0 0 1px rgba(0, 212, 255, 0.15)"
+            : "0 0 0 1px rgba(32, 156, 238, 0.1)",
+        },
+        "&.Mui-focused": {
+          boxShadow: isDark
+            ? "0 0 0 2px rgba(0, 212, 255, 0.2), 0 2px 12px rgba(0, 212, 255, 0.1)"
+            : "0 0 0 2px rgba(32, 156, 238, 0.15), 0 2px 12px rgba(32, 156, 238, 0.08)",
+        },
       },
-      "&.Mui-focused": {
-        boxShadow: isDark
-          ? "0 0 0 2px rgba(0, 212, 255, 0.2), 0 2px 12px rgba(0, 212, 255, 0.1)"
-          : "0 0 0 2px rgba(32, 156, 238, 0.15), 0 2px 12px rgba(32, 156, 238, 0.08)",
+      "& .MuiInputLabel-root": {
+        fontWeight: 500,
+        fontSize: "0.8rem",
+        "&.Mui-focused": {
+          color: theme.palette.primary.main,
+        },
       },
-    },
-    "& .MuiInputLabel-root": {
-      fontWeight: 500,
-      fontSize: "0.8rem",
-      "&.Mui-focused": {
-        color: theme.palette.primary.main,
+      "& .MuiSelect-select": {
+        fontSize: "0.875rem",
       },
-    },
-    "& .MuiSelect-select": {
-      fontSize: "0.875rem",
-    },
-    "& .MuiMenuItem-root": {
-      fontSize: "0.875rem",
-    },
-  }), [isDark, theme.palette.primary.main]);
+      "& .MuiMenuItem-root": {
+        fontSize: "0.875rem",
+      },
+    }),
+    [isDark, theme.palette.primary.main]
+  );
 
   if (!rule || !setting) {
     return null;
@@ -277,13 +280,13 @@ export default function PopupCont({
 
       {!isSeparate && (
         <>
-          <Divider 
-            sx={{ 
+          <Divider
+            sx={{
               my: 1,
-              borderColor: isDark 
-                ? "rgba(255, 255, 255, 0.08)" 
+              borderColor: isDark
+                ? "rgba(255, 255, 255, 0.08)"
                 : "rgba(0, 0, 0, 0.08)",
-            }} 
+            }}
           />
 
           <Grid container columns={12} spacing={1}>

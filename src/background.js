@@ -370,13 +370,8 @@ browser.runtime.onInstalled.addListener(async () => {
  * 浏览器启动
  */
 browser.runtime.onStartup.addListener(async () => {
-  const {
-    clearCache,
-    contextMenuType,
-    csplist,
-    orilist,
-    logLevel,
-  } = await getSettingWithDefault();
+  const { clearCache, contextMenuType, csplist, orilist, logLevel } =
+    await getSettingWithDefault();
 
   // 设置日志
   logger.setLevel(logLevel);
@@ -535,18 +530,20 @@ browser.runtime.onConnect.addListener((port) => {
  */
 browser.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== "local") return;
-  
+
   const settingChange = changes[STOKEY_SETTING];
   if (!settingChange) return;
 
   let oldApis, newApis;
   try {
-    const oldVal = typeof settingChange.oldValue === 'string' 
-      ? JSON.parse(settingChange.oldValue) 
-      : settingChange.oldValue;
-    const newVal = typeof settingChange.newValue === 'string' 
-      ? JSON.parse(settingChange.newValue) 
-      : settingChange.newValue;
+    const oldVal =
+      typeof settingChange.oldValue === "string"
+        ? JSON.parse(settingChange.oldValue)
+        : settingChange.oldValue;
+    const newVal =
+      typeof settingChange.newValue === "string"
+        ? JSON.parse(settingChange.newValue)
+        : settingChange.newValue;
     oldApis = oldVal?.transApis;
     newApis = newVal?.transApis;
   } catch (e) {
@@ -556,10 +553,12 @@ browser.storage.onChanged.addListener((changes, areaName) => {
   if (JSON.stringify(oldApis) !== JSON.stringify(newApis)) {
     browser.tabs.query({}).then((tabs) => {
       tabs.forEach((tab) => {
-        browser.tabs.sendMessage(tab.id, {
-          action: MSG_UPDATE_TRANS_APIS,
-          args: { transApis: newApis },
-        }).catch(() => {});
+        browser.tabs
+          .sendMessage(tab.id, {
+            action: MSG_UPDATE_TRANS_APIS,
+            args: { transApis: newApis },
+          })
+          .catch(() => {});
       });
     });
   }

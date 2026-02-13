@@ -117,15 +117,7 @@ export default function Draggable({
       });
       return edgePosition;
     });
-  }, [
-    origin,
-    hover,
-    width,
-    height,
-    windowWidth,
-    windowHeight,
-    snapEdge,
-  ]);
+  }, [origin, hover, width, height, windowWidth, windowHeight, snapEdge]);
 
   const opacity = snapEdge ? (hover || origin ? 1 : 0.2) : origin ? 0.8 : 1;
 

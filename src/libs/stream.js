@@ -1,8 +1,5 @@
 import { JSONParser } from "@streamparser/json";
-import {
-  OPT_TRANS_OPENAI,
-  OPT_TRANS_OLLAMA,
-} from "../config";
+import { OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA } from "../config";
 import { stripMarkdownCodeBlock } from "./utils";
 
 /**

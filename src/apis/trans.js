@@ -272,8 +272,6 @@ const genOllama = ({
   return { url, body, headers, userMsg };
 };
 
-
-
 const genReqFuncs = {
   [OPT_TRANS_OPENAI]: genOpenAI,
   [OPT_TRANS_OLLAMA]: genOllama,
@@ -505,12 +503,7 @@ export async function* handleTranslate(
     usePool,
   }
 ) {
-  const {
-    apiType,
-    fetchInterval,
-    httpTimeout,
-    useStream,
-  } = apiSetting;
+  const { apiType, fetchInterval, httpTimeout, useStream } = apiSetting;
 
   const enableStream = useStream && API_SPE_TYPES.stream.has(apiType);
 

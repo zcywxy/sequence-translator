@@ -6,11 +6,7 @@ import {
   useEffect,
 } from "react";
 import Alert from "@mui/material/Alert";
-import {
-  STOKEY_SETTING,
-  DEFAULT_SETTING,
-  MSG_SET_LOGLEVEL,
-} from "../config";
+import { STOKEY_SETTING, DEFAULT_SETTING, MSG_SET_LOGLEVEL } from "../config";
 import { useStorage } from "./Storage";
 import Loading from "./Loading";
 import { logger } from "../libs/log";

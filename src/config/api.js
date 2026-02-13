@@ -19,37 +19,19 @@ export const INPUT_PLACE_MODEL = "{{model}}";
 export const OPT_TRANS_OPENAI = "OPENAI";
 export const OPT_TRANS_OLLAMA = "OLLAMA";
 
-export const OPT_ALL_TRANS_TYPES = [
-  OPT_TRANS_OPENAI,
-  OPT_TRANS_OLLAMA,
-];
+export const OPT_ALL_TRANS_TYPES = [OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA];
 
-export const OPT_LANGDETECTOR_ALL = [
-  OPT_TRANS_OPENAI,
-  OPT_TRANS_OLLAMA,
-];
+export const OPT_LANGDETECTOR_ALL = [OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA];
 
 export const OPT_LANGDETECTOR_MAP = new Set(OPT_LANGDETECTOR_ALL);
 
 export const API_SPE_TYPES = {
-  ai: new Set([
-    OPT_TRANS_OPENAI,
-    OPT_TRANS_OLLAMA,
-  ]),
+  ai: new Set([OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA]),
   machine: new Set([]),
   builtin: new Set(OPT_ALL_TRANS_TYPES),
-  mulkeys: new Set([
-    OPT_TRANS_OPENAI,
-    OPT_TRANS_OLLAMA,
-  ]),
-  batch: new Set([
-    OPT_TRANS_OPENAI,
-    OPT_TRANS_OLLAMA,
-  ]),
-  stream: new Set([
-    OPT_TRANS_OPENAI,
-    OPT_TRANS_OLLAMA,
-  ]),
+  mulkeys: new Set([OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA]),
+  batch: new Set([OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA]),
+  stream: new Set([OPT_TRANS_OPENAI, OPT_TRANS_OLLAMA]),
 };
 
 export const BUILTIN_STONES = [

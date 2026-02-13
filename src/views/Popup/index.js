@@ -85,10 +85,9 @@ export default function Popup() {
           background: isDark
             ? "linear-gradient(135deg, rgba(0, 212, 255, 0.3) 0%, rgba(32, 156, 238, 0.1) 50%, rgba(0, 212, 255, 0.2) 100%)"
             : "linear-gradient(135deg, rgba(32, 156, 238, 0.2) 0%, rgba(0, 212, 255, 0.1) 50%, rgba(32, 156, 238, 0.15) 100%)",
-          WebkitMask: 
+          WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          mask: 
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
           pointerEvents: "none",
@@ -99,16 +98,16 @@ export default function Popup() {
         openSeparateWindow={openSeparateWindow}
         handleOpenSetting={handleOpenSetting}
       />
-      <Divider 
-        sx={{ 
-          borderColor: isDark 
-            ? "rgba(255, 255, 255, 0.06)" 
+      <Divider
+        sx={{
+          borderColor: isDark
+            ? "rgba(255, 255, 255, 0.06)"
             : "rgba(0, 0, 0, 0.06)",
-        }} 
+        }}
       />
-      <Box 
-        sx={{ 
-          overflowY: "auto", 
+      <Box
+        sx={{
+          overflowY: "auto",
           maxHeight: 500,
           background: isDark
             ? "linear-gradient(180deg, rgba(18, 18, 26, 0.98) 0%, rgba(10, 10, 15, 0.98) 100%)"

@@ -3,7 +3,7 @@
     "message": "Sequence Traducteur"
   },
   "app_description": {
-    "message": "Une extension de traduction bilingue minimaliste prenant en charge la traduction de pages web, de texte sélectionné et de sous-titres vidéo."
+    "message": "Une extension de traduction bilingue minimaliste avec une interface moderne, prenant en charge la traduction de pages web et de texte sélectionné."
   },
   "toggle_translate": {
     "message": "Activer/désactiver la traduction"

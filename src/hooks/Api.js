@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { DEFAULT_API_LIST, API_SPE_TYPES, OPT_ALL_TRANS_TYPES } from "../config";
+import {
+  DEFAULT_API_LIST,
+  API_SPE_TYPES,
+  OPT_ALL_TRANS_TYPES,
+} from "../config";
 import { useSetting } from "./Setting";
 
 function useApiState() {
@@ -18,9 +22,7 @@ export function useApiList() {
     const missApis = DEFAULT_API_LIST.filter(
       (api) => !curSlugs.has(api.apiSlug)
     );
-    const invalidApis = transApis.filter(
-      (api) => !validTypes.has(api.apiType)
-    );
+    const invalidApis = transApis.filter((api) => !validTypes.has(api.apiType));
 
     if (missApis.length > 0 || invalidApis.length > 0) {
       updateSetting((prev) => {

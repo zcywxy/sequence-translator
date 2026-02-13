@@ -64,11 +64,14 @@ export default function TranCont({
           <Alert severity="error">{error}</Alert>
         ) : loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", py: 1 }}>
-            <CircularProgress size={18} sx={{ color: theme.palette.primary.main }} />
+            <CircularProgress
+              size={18}
+              sx={{ color: theme.palette.primary.main }}
+            />
           </Box>
         ) : (
-          <Typography 
-            sx={{ 
+          <Typography
+            sx={{
               whiteSpace: "pre-line",
               lineHeight: 1.6,
             }}
@@ -112,7 +115,10 @@ export default function TranCont({
         helperText={error}
         InputProps={{
           startAdornment: loading ? (
-            <CircularProgress size={16} sx={{ color: theme.palette.primary.main }} />
+            <CircularProgress
+              size={16}
+              sx={{ color: theme.palette.primary.main }}
+            />
           ) : null,
           endAdornment: (
             <Stack

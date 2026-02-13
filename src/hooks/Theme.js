@@ -235,21 +235,24 @@ export default function Theme({ children, options = {}, styles = {} }) {
       background: darkMode === "dark" ? "#1a1a24" : "#f1f5f9",
     },
     "::-webkit-scrollbar-thumb": {
-      background: darkMode === "dark" 
-        ? "rgba(0, 212, 255, 0.3)" 
-        : "rgba(32, 156, 238, 0.3)",
+      background:
+        darkMode === "dark"
+          ? "rgba(0, 212, 255, 0.3)"
+          : "rgba(32, 156, 238, 0.3)",
       borderRadius: 4,
     },
     "::-webkit-scrollbar-thumb:hover": {
-      background: darkMode === "dark" 
-        ? "rgba(0, 212, 255, 0.5)" 
-        : "rgba(32, 156, 238, 0.5)",
+      background:
+        darkMode === "dark"
+          ? "rgba(0, 212, 255, 0.5)"
+          : "rgba(32, 156, 238, 0.5)",
     },
     "*": {
       scrollbarWidth: "thin",
-      scrollbarColor: darkMode === "dark"
-        ? "rgba(0, 212, 255, 0.3) #1a1a24"
-        : "rgba(32, 156, 238, 0.3) #f1f5f9",
+      scrollbarColor:
+        darkMode === "dark"
+          ? "rgba(0, 212, 255, 0.3) #1a1a24"
+          : "rgba(32, 156, 238, 0.3) #f1f5f9",
     },
     ...styles,
   };

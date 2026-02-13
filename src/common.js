@@ -1,8 +1,5 @@
 import { OPT_HIGHLIGHT_WORDS_DISABLE, APP_NAME } from "./config";
-import {
-  getSettingWithDefault,
-  getWordsWithDefault,
-} from "./libs/storage";
+import { getSettingWithDefault, getWordsWithDefault } from "./libs/storage";
 import { isIframe } from "./libs/iframe";
 import { genEventName } from "./libs/utils";
 import { handlePing, injectScript } from "./libs/gm";
@@ -176,7 +173,6 @@ export async function run(isUserscript = false) {
     if (isIframe) {
       return;
     }
-
   } catch (err) {
     console.error(`[${APP_NAME}]`, err);
     showErr(err.message);

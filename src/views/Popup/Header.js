@@ -7,10 +7,7 @@ import { useI18n } from "../../hooks/I18n";
 import Box from "@mui/material/Box";
 import { useTheme, alpha } from "@mui/material/styles";
 
-export default function Header({
-  openSeparateWindow,
-  handleOpenSetting,
-}) {
+export default function Header({ openSeparateWindow, handleOpenSetting }) {
   const i18n = useI18n();
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
@@ -95,7 +92,7 @@ export default function Header({
                 boxShadow: isDark
                   ? "0 4px 12px rgba(0, 212, 255, 0.2)"
                   : "0 4px 12px rgba(32, 156, 238, 0.15)",
-                "& svg": { 
+                "& svg": {
                   color: theme.palette.primary.main,
                   transform: "scale(1.1)",
                 },
@@ -118,7 +115,7 @@ export default function Header({
                 boxShadow: isDark
                   ? "0 4px 12px rgba(0, 212, 255, 0.2)"
                   : "0 4px 12px rgba(32, 156, 238, 0.15)",
-                "& svg": { 
+                "& svg": {
                   color: theme.palette.primary.main,
                   transform: "scale(1.1)",
                 },
