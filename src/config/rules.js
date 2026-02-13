@@ -1,4 +1,4 @@
-import { OPT_STYLE_NONE } from "./styles";
+import { OPT_STYLE_BLOCKQUOTE } from "./styles";
 
 export const GLOBAL_KEY = "*";
 export const REMAIN_KEY = "-";
@@ -100,7 +100,7 @@ export const GLOBLA_RULE = {
   apiSlug: "OPENAI", // 翻译服务
   fromLang: "auto", // 源语言
   toLang: "zh-CN", // 目标语言
-  textStyle: OPT_STYLE_NONE, // 译文样式
+  textStyle: OPT_STYLE_BLOCKQUOTE, // 译文样式
   transOpen: "false", // 开启翻译
   // bgColor: DEFAULT_COLOR, // 译文颜色 (作废)
   // textDiyStyle: DEFAULT_DIY_STYLE, // 自定义译文样式 (作废)

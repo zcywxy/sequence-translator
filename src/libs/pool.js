@@ -3,15 +3,19 @@ import { kissLog } from "./log";
 
 class TaskPool {
   #pool = [];
-  #maxRetry = 2;
-  #retryInterval = 1000;
+  #maxRetry = 5;
+  #baseRetryInterval = 1000;
   #interval;
   #isProcessing = false;
   #schedulerTimer = null;
 
   constructor(interval = DEFAULT_FETCH_INTERVAL, retryInterval = 1000) {
     this.#interval = interval;
-    this.#retryInterval = retryInterval;
+    this.#baseRetryInterval = retryInterval;
+  }
+
+  #getRetryDelay(retryCount) {
+    return this.#baseRetryInterval * Math.pow(2, retryCount);
   }
 
   async #processNext() {
@@ -31,8 +35,10 @@ class TaskPool {
       } catch (err) {
         kissLog("task pool", err);
         if (task.retry < this.#maxRetry) {
+          const retryDelay = this.#getRetryDelay(task.retry);
+          kissLog(`task retry ${task.retry + 1}/${this.#maxRetry}, delay: ${retryDelay}ms`);
           this.#pool.unshift({ ...task, retry: task.retry + 1 });
-          await new Promise((r) => setTimeout(r, this.#retryInterval));
+          await new Promise((r) => setTimeout(r, retryDelay));
           continue;
         } else {
           task.reject(err);

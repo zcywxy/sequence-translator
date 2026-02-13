@@ -131,6 +131,12 @@ export default function TranForm({
     [transApis]
   );
 
+  useEffect(() => {
+    if (apiSlugs.length === 0 && optApis.length > 0) {
+      setApiSlugs([optApis[0].key]);
+    }
+  }, [apiSlugs.length, optApis]);
+
   const isWord = useMemo(() => isValidWord(text), [text]);
   const xs = useMemo(() => (isPlaygound ? 6 : 4), [isPlaygound]);
   const md = useMemo(() => (isPlaygound ? 3 : 4), [isPlaygound]);

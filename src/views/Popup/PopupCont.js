@@ -20,6 +20,8 @@ import {
   MSG_TRANSINPUT_TOGGLE,
   OPT_LANGS_FROM,
   OPT_LANGS_TO,
+  GLOBAL_KEY,
+  GLOBLA_RULE,
 } from "../../config";
 import { saveRule } from "../../libs/rules";
 import { tryClearCaches } from "../../libs/cache";
@@ -217,6 +219,8 @@ export default function PopupCont({
     hasShadowroot,
     isPlainText = false,
   } = rule || {};
+
+  const displayTextStyle = textStyle === GLOBAL_KEY ? GLOBLA_RULE.textStyle : textStyle;
 
   const tranboxSetting = setting?.tranboxSetting || {};
   const transApis = setting?.transApis || [];
@@ -466,7 +470,7 @@ export default function PopupCont({
               select
               SelectProps={{ MenuProps: { disablePortal: true } }}
               size="small"
-              value={textStyle}
+              value={displayTextStyle}
               name="textStyle"
               label={
                 commands["toggleStyle"]
