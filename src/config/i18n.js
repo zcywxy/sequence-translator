@@ -199,8 +199,8 @@ export const I18N = {
     en: `Rules Setting`,
   },
   apis_setting: {
-    zh: `接口设置`,
-    en: `Apis Setting`,
+    zh: `模型设置`,
+    en: `Model Setting`,
   },
   sync_setting: {
     zh: `同步设置`,
